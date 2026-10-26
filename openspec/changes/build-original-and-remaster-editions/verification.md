@@ -951,3 +951,33 @@ No new binary, release tag or public Pages launch is claimed. Existing dev.11
 archives predate the repository-link text changes. Browser UI preview could not be
 isolated from concurrent Safari activity; an in-app browser is unavailable. The
 full implementation change remains active until its remaining acceptance is done.
+
+### Migration completion
+
+- Reballance source is pushed to iwonz/reballance main at 8bfec078; initial hosted
+  [Build checks 40321995098](https://github.com/iwonz/reballance/actions/runs/40321995098)
+  passed. Its initial-push delivery check has no previous base; this is not gameplay
+  acceptance and does not close this ongoing change.
+- Independent clone: /Users/iwonz/Desktop/Reballance, with its own .git (no object
+  alternates), Library, Logs and Builds.noindex. No linked worktree or shared cache.
+  Existing Reballance archives/evidence moved here; Ballance archives and its classic
+  cache remain in /Users/iwonz/Desktop/Ballance. Installed apps/saves were untouched.
+- Classic main was restored to its preserved f4acc137 runtime/content/native bytes,
+  published as 25b31108 and passed hosted checks. The obsolete original branch was
+  archived as archive/original-before-repository-split before its removal. Both
+  repositories now have only main on GitHub. Old release files/tags remain in Ballance.
+- Removed inherited Ballance tags from this local clone only after verifying every
+  tag object still exists in the classic repository. No Ballance tag/release was
+  published to iwonz/reballance. New Reballance release tags will use v<version>.
+- Unity 6000.6.7f1 compiled the moved project and LocalizationChecks reported 205
+  checked prefab labels. The first -nographics invocation ended with signal 4 after
+  the success marker; repeating with the graphics backend completed with exit 0 and
+  'Exiting batchmode successfully now'. No source/generated asset churn followed.
+- New source/feedback URL values are compiled and localized resource checks passed.
+  Existing dev.11 packaged players were preserved rather than silently overwritten;
+  they will receive updated repository links on the next full content-aware build.
+
+Repository separation is complete. The gameplay/visual/hardware tasks above are
+still open; no release or Pages launch is authorized merely by this source move.
+The delivery-record CI check may remain red on subsequent ongoing-change commits
+until the full OpenSpec change is actually verified and archived.

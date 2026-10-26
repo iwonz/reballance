@@ -59,7 +59,7 @@ Section 8 supersedes their publication topology; unfinished gameplay acceptance 
 
 ## 8. Independent repositories (supersedes unified distribution)
 
-- [ ] 8.1 Preserve and push Reballance history to iwonz/reballance main with independent source, caches and build outputs; retain unresolved acceptance evidence.
+- [x] 8.1 Preserve and push Reballance history to iwonz/reballance main with independent source, caches and build outputs; retain unresolved acceptance evidence.
 - [x] 8.2 Replace combined release/site tooling with standalone versioned Reballance publication; test identity, corruption, unsafe archives, size and no-overwrite rejection.
 - [x] 8.3 Update the landing, README, gallery, attribution and maintained guides for separate repositories; preserve the complete upstream rights notice.
-- [ ] 8.4 Verify the remote history and local checks, record migration evidence and limitations. Restore classic Ballance main and archive the obsolete original branch only after preservation is verified.
+- [x] 8.4 Verify the remote history and local checks, record migration evidence and limitations. Restore classic Ballance main and archive the obsolete original branch only after preservation is verified.
