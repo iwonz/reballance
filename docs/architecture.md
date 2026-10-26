@@ -12,7 +12,7 @@ in change records. Check selection is centralized in [validation.md](validation.
 | `Assets/System` | Startup, package/services framework, UI primitives, resource paths, editor checks |
 | `Assets/Game` | Core package, gameplay, menus, original levels, level loading and editor authoring |
 | `Assets/Game/Remaster` | Remaster environment, rendering, UI and isolated settings/records |
-| `site` | Static bilingual landing and explicit two-edition release manifest |
+| `site` | Standalone Reballance bilingual landing |
 | `Assets/Packages` | Six built-in resource/mod packages and package templates |
 | `Assets/BallancePhysics` | Managed native-physics wrapper, editor inspectors, shipped plugins |
 | `BallancePhysics` | C++ bridge and pinned-source patch; see its AGENTS.md |
@@ -126,8 +126,7 @@ completion, and return to menu; one successful level load does not cover these.
 ## Remaster environment and editions
 
 [Active contract](../openspec/changes/build-original-and-remaster-editions/specs/remaster-environment/spec.md);
-[edition maintenance](editions.md). The Original worktree and immutable baseline
-are independent of `main`; there is no runtime edition switch. The Remaster is in
+[edition maintenance](editions.md). Classic Ballance lives in a separate repository; there is no runtime edition switch. The Remaster is in
 development, with outstanding acceptance recorded in the active change.
 
 [EnvironmentState](../Assets/Game/Remaster/Scripts/EnvironmentState.cs) owns the seven
@@ -349,24 +348,19 @@ and CI requirements. Native rebuild provenance lives in
 ## Web publication
 
 [Contract](../openspec/specs/web-publication/spec.md).
-[Pages workflow](../.github/workflows/github-pages.yml) selects the unified distribution
-pin from `main`, checks out its immutable `release/v*` source and deploys the attached
-site; it does not build Unity. [release_identity.py](../scripts/release_identity.py)
-owns source/distribution tag parsing and the schema-2 five-platform manifest.
-[prepare-release.py](../scripts/prepare-release.py) stages and verifies both sets of
-five platform artifacts, notices and the complete site archive.
-[prepare-pages.py](../scripts/prepare-pages.py) validates individual Web archive
-safety, checksum, size, content and identity. [prepare-site.py](../scripts/prepare-site.py)
-stages the landing and both players atomically, adds edition navigation and enforces
-the combined Pages size limit. Original's HTML stays in the previous page directory.
-[verify-site.py](../scripts/verify-site.py) checks the distribution and both public
-identities. Null distribution/Reballance pins intentionally prevent deployment.
+[Pages workflow](../.github/workflows/github-pages.yml) deploys this repository's
+requested release only, from its immutable `v<version>` source.
+[release_identity.py](../scripts/release_identity.py) validates Reballance tag and
+application identity. [prepare-pages.py](../scripts/prepare-pages.py) validates the
+Web checksum, archive safety, size, content and embedded identity.
+[prepare-site.py](../scripts/prepare-site.py) atomically stages the landing, notices
+and player under `play/`, enforcing the complete site's 1 GB limit.
+The workflow checks the served release tag and SHA-256 after deployment.
 
-The [release guide](build-and-release.md#github-pages) owns setup and independent
-rollback through complete distribution releases. HTTP identity checks do not cover
-gameplay: test both public players, preserved Original storage, navigation, menu,
-control, fall/rebirth and return. [README](../README.md) introduces both games;
-[Credits](../CREDITS.md) owns upstream attribution and the preserved rights notice.
+The [release guide](build-and-release.md#github-pages) owns setup and rollback.
+HTTP identity is not gameplay acceptance: exercise menu, controls, recovery and
+return in the public player. [Credits](../CREDITS.md) owns attribution and rights.
+Classic Ballance publication is independent in its own repository.
 
 ## Known gaps
 

@@ -13,7 +13,7 @@ namespace Ballance2.Editor.Modding
         [@MenuItem("Ballance/Help", false, 104)]
         static void ShowHelp()
         {
-            EditorUtility.OpenWithDefaultApp("https://github.com/iwonz/ballance/blob/main/docs/architecture.md");
+            EditorUtility.OpenWithDefaultApp("https://github.com/iwonz/reballance/blob/main/docs/architecture.md");
         }
         [@MenuItem("Ballance/About", false, 109)]
         static void ShowAbout()
@@ -58,8 +58,8 @@ namespace Ballance2.Editor.Modding
 
             GUILayout.BeginHorizontal();
             GUILayout.FlexibleSpace();
-            if (GUILayout.Button("github.com/iwonz/ballance", LinkLabel))
-                EditorUtility.OpenWithDefaultApp("https://github.com/iwonz/ballance");
+            if (GUILayout.Button("github.com/iwonz/reballance", LinkLabel))
+                EditorUtility.OpenWithDefaultApp("https://github.com/iwonz/reballance");
             GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();
 

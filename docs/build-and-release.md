@@ -2,9 +2,8 @@
 
 Use **Unity 6000.6.7f1**, as pinned in ProjectSettings. Do not mix Unity 2021
 players or AssetBundles with current outputs. Select the correct independent
-[edition worktree](editions.md) before building. A new game version rebuilds the player,
-core, six built-in packages, and levels 01-13 for its target. A unified distribution
-may carry the other game's unchanged verified archives forward without rebuilding it.
+[repository clone](editions.md) before building. A new game version rebuilds the player,
+core, six built-in packages, and levels 01-13 for its target.
 
 ## Local builds
 
@@ -28,9 +27,7 @@ python3 scripts/package-build.py WebGL
 
 Use the same target in both commands. Release assets and SHA-256 sidecars go to
 `Builds/releases/`; filenames use the edition descriptor and Player Settings ->
-Version. Original checkouts without an edition descriptor retain legacy naming;
-the Original maintenance branch carries the shared edition-aware tooling and an
-`original` descriptor for namespaced tags. Move previous outputs
+Version. Reballance uses its own descriptor and v<version> public tags. Move previous outputs
 aside before rebuilding: these tools deliberately refuse to overwrite them.
 Unity logs go to `Logs/build-<platform>.log`.
 
@@ -94,131 +91,50 @@ submits builds to a mobile store.
 
 ## GitHub Pages
 
-Every new public release is a **unified distribution** tagged `release/v<version>`
-on `main`. It contains both Ballance and Reballance for all five platforms, matching
-checksums and the complete two-player Pages archive. Independent edition source tags
-(`original/v*`, `remaster/v*`) are provenance, not separate public releases. Keep all
-legacy releases unchanged. Documentation/tooling commits alone need no binary release.
-Delivery is complete only after the attached site is deployed and both public games
-are checked. Never reuse or rename an older player as a new game version.
+Reballance releases belong to `iwonz/reballance`, independently of classic Ballance.
+Each `v<version>` tag identifies matching source and five platform builds with SHA-256
+sidecars. Preserve existing releases; never relabel an older player with a new version.
+Do not publish Reballance until its required gameplay acceptance is complete.
 
-Web uses gzip with **Decompression Fallback**, single-threaded Wasm physics, and
-relative URLs. Custom Content-Encoding or COOP/COEP headers are unnecessary.
-Web releases explicitly use runtime-speed LTO and WebAssembly 2023, retaining full
-managed exception handling. This enables native Wasm exceptions and SIMD without
-reducing graphics quality or changing simulation frequency. Use current browsers;
-the generated Unity 6.6 compiler targets Chrome 95+, Firefox 100+, or Safari 16.4+
-(these minimum versions are not a tested browser matrix). See Unity's [Wasm setting](https://docs.unity3d.com/6000.6/Documentation/ScriptReference/PlayerSettings.WebGL-wasm2023.html)
-and [performance guidance](https://docs.unity3d.com/6000.6/Documentation/Manual/webgl-performance.html).
-Run the [hardware frame checks](validation.md#web-frame-performance) when changing
-rendering, physics hot paths, Web compilation, or gameplay performance.
-The player works below a repository prefix such as `/ballance/`. Generated Web
-files are release assets, not source-controlled content.
+1. Configure **Settings → Pages → GitHub Actions** and permit release tags in the
+   `github-pages` deployment environment.
+2. Complete the [validation](validation.md), build and package all five targets.
+   Record actual device/gameplay results and limitations. Use the matching product
+   version in `ProjectSettings`, the tag and every archive.
+3. Commit verified source and an annotated `v<version>` tag, then push them to this
+   repository. Create a draft release with all five archives/checksums plus `LICENSE`
+   and `CREDITS.md`. Inspect uploads before publishing. Existing versions are immutable.
+4. Publication runs [the Pages workflow](../.github/workflows/github-pages.yml). It
+   checks out the release tag, downloads its Reballance Web archive and sidecar,
+   validates content/product/version and safe extraction, and stages `site/` with the
+   player under `play/`. No classic Ballance assets or shared manifest are needed.
+5. Wait for deployment and public `release.json` tag/checksum validation. Exercise
+   loading, menu, level control, save recovery and return at the public URL before
+   calling delivery complete. Missing Web files or failed Pages means delivery failed.
 
-The root becomes a static RU/EN landing. Original launches at `original.html`,
-with assets under `original/`; Remaster launches at `remaster/`. Keeping Original's
-host page in the old directory preserves Unity's directory-based Web storage key.
-Test an existing browser profile before the first relocation. The landing does not
-load Unity.
+The landing is `https://iwonz.github.io/reballance/`; the player uses
+`https://iwonz.github.io/reballance/play/`. Unity saves follow that page directory.
+The landing is RU/EN and loads no Unity runtime before Play. Concept references are
+labelled; actual screenshots identify their captured build.
 
-1. Set **Settings → Pages → Source → GitHub Actions** and allow `main` and
-   `release/v*` in the `github-pages` environment. Publication is coordinated on main.
-2. Finish the required acceptance and source verification in each affected game's
-   worktree. Create and push its immutable source tag. For an unchanged edition,
-   reuse its verified tag and files. Reballance must not be published before its
-   full gameplay acceptance; do not bypass this with a prerelease.
-3. Build and package each changed edition for WebGL, Windows, Linux, macOS and
-   Android. Place both sets of artifacts and SHA-256 sidecars in a fresh local
-   `Builds/distribution-input/original/` and `Builds/distribution-input/remaster/`.
-   Retrieve unchanged files from their existing release without renaming them.
-4. Update `site/releases.json` on main: schema 2, the new `release/v<version>`, and
-   both edition source tags with the five platform hashes in `assets`. Modify only
-   the edition pin that actually changes. A null distribution/Reballance pin is an
-   intentional publication barrier. The first accepted pair requires real builds
-   of both games, not fixtures or development placeholders.
-5. Commit the manifest and source, run the applicable checks, then create and push
-   the annotated distribution tag on that main commit. Prepare the complete upload
-   directory and verify its attached site using the commands below. A failure leaves
-   no partial output; existing output directories are never overwritten.
-6. Create **one draft GitHub Release** for the distribution tag, attach every prepared
-   file and complete its release notes with actual validation/limitations. Only then
-   publish the draft. Do not publish edition source tags as separate new releases.
-7. Pages selects the approved distribution from main, checks out that immutable
-   release tag, verifies that its manifest agrees, and downloads all assets from
-   **that one release**. It checks the ten pinned hashes, validates both Web players,
-   reconstructs the site and compares every file against the attached site archive.
-   It deploys the attached site only if everything agrees and the combined site fits
-   within 1,000,000,000 bytes. Deployments are serialized.
-8. Wait for the workflow's public distribution and both edition identity checks.
-   Exercise both public games: load, control, recovery, return to menu and switching.
-   Record the release and successful Pages workflow links. Upload/build success is
-   not full release delivery or gameplay acceptance.
-
-Run these commands from the tagged main checkout, using a new output path:
+Use a new empty output path and a directory containing only the selected Web archive
+and checksum to preview the exact site from the tagged checkout:
 
 ```sh
-python3 scripts/prepare-release.py prepare Builds/distribution-input Builds/distribution
-python3 scripts/prepare-release.py verify Builds/distribution Builds/distribution-preview
-python3 -m http.server 8000 --directory Builds/distribution-preview
-# In another terminal, while the server is running:
-python3 scripts/verify-site.py http://localhost:8000/ site/releases.json
-```
-
-The upload directory contains both games' archives and sidecars,
-`Ballance-Reballance-<distribution-version>-site.tar.gz` and its sidecar,
-`releases.json`, `RELEASE-NOTES.md`, `LICENSE` and `CREDITS.md`. Release notes link both
-edition source tags; the automatically generated GitHub source archive alone is
-only the distribution's main checkout and is not a substitute for Ballance's source.
-Use the authenticated GitHub CLI after acceptance, checks and tag pushes:
-
-```sh
-release_tag=$(python3 -c 'import json; print(json.load(open("site/releases.json"))["release"])')
-gh release create "$release_tag" --verify-tag --draft --title "Ballance + Reballance — $release_tag" --notes-file Builds/distribution/RELEASE-NOTES.md
-gh release upload "$release_tag" Builds/distribution/*
-# Inspect the uploaded assets and finish the validation notes before publishing.
-gh release edit "$release_tag" --draft=false
-gh run list --workflow github-pages.yml --limit 5
-```
-
-These commands publish through the operator's authenticated CLI, which triggers the
-release event. If publication is later automated with `GITHUB_TOKEN`, explicitly
-invoke the Pages workflow: GitHub suppresses most events created by that token
-([GitHub event rules](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows)).
-
-The public URL is [iwonz.github.io/ballance](https://iwonz.github.io/ballance/).
-Root `release.json` identifies the distribution and pair; each edition also has its
-own `release.json`. The site includes license/Credits links and per-player navigation.
-The original player stays in the same page directory to preserve Web storage.
-
-To roll back one edition, create a new complete distribution with its previously
-verified source tag/hashes and the other edition unchanged. To redeploy the already
-approved pair, manually dispatch Pages on main: it uses that immutable distribution's
-source and attached site even when main's landing later changes. Never overwrite an
-existing release or select another edition dynamically. No Unity license is needed
-for this deployment; Unity and platform checks happen before preparing the release.
-
-Test over HTTP, not by opening index.html with file://:
-
-```sh
-python3 -m http.server 8000 --directory Builds
-# Open http://localhost:8000/WebGL/
-```
-
-For a deployment-equivalent check with a ready manifest:
-
-```sh
-python3 scripts/prepare-release.py verify Builds/site-download Builds/site-preview --fetch
+python3 scripts/prepare-site.py Builds/web-release Builds/site-preview v1.0.0
 python3 -m http.server 8000 --directory Builds/site-preview
-python3 scripts/verify-site.py http://localhost:8000/ site/releases.json
 ```
 
-Use new download/output paths that do not exist. `prepare-pages.py` remains the individual
-archive validator used by `prepare-site.py`; it checks checksum, safe extraction,
-required content and embedded edition/version. The combined size limit is additional
-to each archive's limit. Built-in packages use same-origin URLs below each edition's
-`StreamingAssets/BuiltInPackages` directory.
-Built-in mods are compiled into the player. New external C# DLL mods require Mono;
-Web/Android IL2CPP require adding their source and rebuilding.
+Replace the example tag with the actual accepted release. The preparer rejects
+corrupt/mismatched archives, links, traversal, nonempty destinations and sites over
+1,000,000,000 bytes. It includes LICENSE and CREDITS.md and writes matching root/player
+release identities.
+
+To roll back, manually dispatch `github-pages.yml` with the earlier published tag.
+It uses that release's immutable source and Web bytes, without changing Ballance.
+Releases created with `GITHUB_TOKEN` do not trigger another workflow automatically;
+explicitly dispatch Pages for the same tag in that automation and verify completion.
+Do not weaken identity checks or publish unaccepted builds to make deployment green.
 
 ## GitHub Actions
 

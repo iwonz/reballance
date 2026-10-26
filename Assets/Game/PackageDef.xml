@@ -6,9 +6,9 @@
     <Logo>PackageLogo.png</Logo>
     <Introduction>{core.package.Introduction}</Introduction>
     <Description>{core.package.Description}</Description>
-    <Link>https://github.com/iwonz/ballance</Link>
-    <AuthorLink>https://github.com/iwonz/ballance</AuthorLink>
-    <DocLink>https://github.com/iwonz/ballance/tree/main/docs</DocLink>
+    <Link>https://github.com/iwonz/reballance</Link>
+    <AuthorLink>https://github.com/iwonz/reballance</AuthorLink>
+    <DocLink>https://github.com/iwonz/reballance/tree/main/docs</DocLink>
     <VersionName>{internal.core.versionName}</VersionName>
   </BaseInfo>
   <EntryCode>PackageEntry</EntryCode>

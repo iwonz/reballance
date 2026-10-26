@@ -916,3 +916,38 @@ Source delivery: `13a527d5` (unified distributions, shared guide/Credits/gallery
 
 
 Hosted CI for `13a527d5`: [run 40316761107](https://github.com/iwonz/ballance/actions/runs/40316761107). Specification/context validation and the ARM64 script/native checks passed. The only failed step was `Require a completed change record in this delivery`, consistent with the unfinished broad change. Temporary distribution upload directories and extracted previews created during this verification were deleted after testing; the fixture manifest and browser evidence remain under ignored checks output. The local HTTP server was stopped.
+
+## Independent repository migration — 2026-10-26
+
+The user's separate-repository decision supersedes the preceding unified-distribution
+implementation. Reballance continues in iwonz/reballance main; classic Ballance will
+be restored on iwonz/ballance main after the new history is verified remotely.
+The unfinished gameplay/hardware acceptance above remains open.
+
+### Checks
+
+- `python3 scripts/test-release-tools.py`: 17 passed after removing paired-release
+  plumbing; covers standalone site, identity, corruption, traversal, links, size,
+  no-overwrite, missing data and development macOS packaging.
+- `python3 scripts/test-agent-context.py`: 5 passed.
+- `python3 scripts/check-agent-context.py`: passed.
+- `openspec validate --all --strict --no-interactive`: 14 passed.
+- `python3 scripts/check-localization.py`: passed, 341 Russian translations/12 resources.
+- `node --check site/assets/site.js` and actionlint 1.7.12: passed.
+- Prepared the standalone site using the existing dev.11 Web archive and its verified
+  sidecar. This checks hosting/packaging, not a newly rebuilt runtime.
+
+### Results
+
+The site contains Reballance under play/ and its own root/player identity, with
+LICENSE and CREDITS. No Ballance player is included. Public v tags resolve to
+Reballance in this repository; legacy remaster/v input remains accepted. Source,
+feedback and package documentation links now point to iwonz/reballance without
+changing localized keys, package IDs, GUIDs, storage identities or native plugins.
+
+### Limitations
+
+No new binary, release tag or public Pages launch is claimed. Existing dev.11
+archives predate the repository-link text changes. Browser UI preview could not be
+isolated from concurrent Safari activity; an in-app browser is unavailable. The
+full implementation change remains active until its remaining acceptance is done.

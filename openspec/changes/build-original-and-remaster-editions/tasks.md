@@ -1,3 +1,6 @@
+Earlier branch/unified-distribution work below records completed intermediate steps.
+Section 8 supersedes their publication topology; unfinished gameplay acceptance remains required.
+
 ## 1. Preserve and separate editions
 
 - [x] 1.1 Create original/v1.0.11 and original worktree at d066bfe5; verify commit identities and untouched baseline files.
@@ -32,8 +35,8 @@
 
 ## 5. Site and publication
 
-- [ ] 5.1 Build responsive RU/EN landing using actual game captures with both play links, attribution and reduced motion; verify keyboard/mobile/language behavior without Unity downloads.
-- [ ] 5.2 Implement manifest-pinned unified-release Pages preparation and deployment, combined-size validation and independent rollback; pass archive/workflow tests and both public identity checks.
+- [ ] 5.1 Build responsive RU/EN landing using actual Reballance captures with its play link, attribution and reduced motion; verify keyboard/mobile/language behavior without Unity downloads.
+- [ ] 5.2 Implement standalone Reballance Pages preparation and deployment, site-size validation and tag-pinned rollback; pass archive/workflow tests and its public identity check.
 - [x] 5.3 Preserve Original browser storage at original.html with edition-specific resource paths; test an existing profile, independent Remaster reset and all subpath requests.
 
 ## 6. Acceptance and delivery
@@ -42,7 +45,7 @@
 - [ ] 6.2 Measure baseline/Remaster input at 30/60/120/144 FPS and real frame/GPU/memory budgets at Full HD/QHD/4K; include RTX 3060 reference and Apple M3 evidence.
 - [ ] 6.3 Build/package Web, Windows, Linux, macOS and Android; verify physical target input/audio/lifecycle/gameplay and explicitly record unavailable checks.
 - [ ] 6.4 Review diff/GUIDs, update source map/guides and verification record, resolve all requirements, synchronize specs and archive only when complete; run strict/context/delivery checks.
-- [ ] 6.5 Push edition refs and verified release source, attach assets/checksums, publish, wait for Pages and exercise both public players; retain release and workflow links.
+- [ ] 6.5 Push verified Reballance release source, attach assets/checksums, publish, wait for Pages and exercise its public player; retain release and workflow links.
 
 - [x] 6.6 Apply Ballance / Reballance public names and keep only the latest canonical macOS installations; add verified replacement/duplicate cleanup tooling and remove obsolete installed apps, delete obsolete build/disabled bundles, use -dev names for temporary applications, and remove stale catalog registrations without touching saves.
 
@@ -53,3 +56,10 @@
 - [x] 7.1 Replace separate public release delivery with a single distribution manifest, ten verified platform artifacts, attached two-player site, immutable-source Pages deployment and per-player switch links; test incomplete/corrupt/mismatched releases and unchanged-edition pins.
 - [x] 7.2 Rewrite README with introduction, branch table, run/development/release instructions, real labelled galleries and upstream-first Credits; preserve the exact upstream rights notice and include legal notices in distribution/site artifacts.
 - [x] 7.3 Run release-tool, workflow, context and local HTTP/browser checks; record results and limits, commit and push authorized source changes without publishing unaccepted Reballance builds.
+
+## 8. Independent repositories (supersedes unified distribution)
+
+- [ ] 8.1 Preserve and push Reballance history to iwonz/reballance main with independent source, caches and build outputs; retain unresolved acceptance evidence.
+- [x] 8.2 Replace combined release/site tooling with standalone versioned Reballance publication; test identity, corruption, unsafe archives, size and no-overwrite rejection.
+- [x] 8.3 Update the landing, README, gallery, attribution and maintained guides for separate repositories; preserve the complete upstream rights notice.
+- [ ] 8.4 Verify the remote history and local checks, record migration evidence and limitations. Restore classic Ballance main and archive the obsolete original branch only after preservation is verified.

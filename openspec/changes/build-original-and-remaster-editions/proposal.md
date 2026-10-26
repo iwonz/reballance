@@ -6,18 +6,16 @@ player, save namespace, and Pages deployment currently couple these products.
 
 ## What Changes
 
-- Preserve d066bfe5 as original/v1.0.11 and maintain an original branch; main owns
-  Remaster and the shared site. Transfer fixes selectively, without branch merges.
-- Keep independent edition versions, application identities, saves and build trees; publish both games together in one versioned distribution release.
+- Preserve the classic baseline and maintenance history in iwonz/ballance. Move Reballance history and development to iwonz/reballance. Each repository owns its main branch, documentation, releases and Pages; transfer shared fixes selectively.
+- Keep independent edition versions, application identities, saves and build trees; publish each game independently from its own repository using v<version> tags.
 - Modernize Remaster materials, skies, sound, all menu/HUD/tutorial flows and scalable
   rendering while preserving level topology and the calibrated dry gameplay baseline.
 - Replace Remaster startup/About promotional branding with its own generated cloud-reveal title artwork; redesign records and every remaining menu control while preserving source license notices.
 - Add seven environment presets, authored profiles for all thirteen built-in levels,
   gradual runtime switching, shared visual/contact state, checkpoint restoration and
   environment-independent records. Extend native IVP rather than substituting Unity physics.
-- Publish a bilingual static landing and both verified Web players atomically from
-  pinned source tags and platform checksums, preserving Original browser storage and independent rollback. Include the exact two-player site archive in the same release.
-- Rewrite README with branch ownership, run/development instructions, real screenshot galleries, upstream-first Credits and the unchanged upstream rights notice for both editions.
+- Publish a bilingual Reballance landing and its verified player at /reballance/play/. Ballance remains independently hosted at /ballance/, preserving its browser storage. Remove the combined distribution manifest and release coupling.
+- Rewrite README with repository ownership, run/development instructions, each game's real screenshot gallery, upstream-first Credits and the unchanged upstream rights notice for both editions.
 - Validate all five existing release platforms, the 91 level/preset combinations,
   frame-rate independence and actual hardware performance before claiming completion.
 
@@ -32,7 +30,7 @@ player, save namespace, and Pages deployment currently couple these products.
 - `player-persistence`: Edition isolation and shared Reballance records with preservation of earlier development scores.
 - `physics-runtime`: Dynamic per-contact surface profiles and reproducible native builds.
 - `platform-builds`: Edition-aware identity and release asset validation.
-- `web-publication`: Bilingual landing and atomic publication of two pinned players.
+- `web-publication`: Independent Reballance landing and verified single-player publication.
 
 ## Impact
 

@@ -1,60 +1,45 @@
 ## MODIFIED Requirements
 
 ### Requirement: Verified release extraction
-Pages preparation SHALL validate each pinned edition's Web archive and matching
-SHA-256 sidecar, require an empty destination, reject unsafe paths, links and special
-files, validate complete content and tag/archive/player version agreement, and enforce
-a combined published-site limit of 1,000,000,000 bytes. Successful preparation SHALL
-write edition-specific identities and an aggregate manifest with tags, versions,
-archive names and verified checksums. Legacy v1.0.11 SHALL remain a valid Original input.
+Pages preparation SHALL accept exactly one Reballance Web archive with a matching SHA-256 sidecar, require an empty destination, reject links/special files and unsafe extraction paths, enforce the uncompressed size limit, and validate required game content. Its archive filename and embedded Web player product, application identity and version SHALL match the requested release tag. Successful preparation SHALL write a public release identity containing the tag, version, archive name, and archive checksum.
 
 #### Scenario: Corrupt archive
-- **WHEN** either archive checksum differs from its pinned value or sidecar
-- **THEN** publication fails before deploying either edition
+- **WHEN** the archive checksum differs from its sidecar
+- **THEN** publication fails before extraction or deployment
 
 #### Scenario: Unsafe archive member
-- **WHEN** an archive contains a link, special file or escaping path
+- **WHEN** an archive contains a link, special file, or a path escaping the destination
 - **THEN** preparation rejects it
 
 #### Scenario: Wrong player version
-- **WHEN** a release tag differs from the archive or embedded player identity
-- **THEN** preparation fails rather than relabeling that player
-
-#### Scenario: Combined size overflow
-- **WHEN** both players plus landing exceed the site size budget
-- **THEN** preparation fails even if each player alone fits
+- **WHEN** the requested release tag differs from the archive name or embedded Web player version
+- **THEN** preparation fails instead of deploying that player under the requested identity
 
 ### Requirement: Release-triggered deployment
-Every public distribution release SHALL contain both editions' five platform artifacts and SHA-256 sidecars, a pinned manifest, and the complete two-player Pages archive with its checksum. Distribution tags SHALL use release/v<version> on main; original/v* and remaster/v* SHALL identify independent source versions without requiring separate public releases. Existing releases SHALL remain unchanged. Main SHALL own publication. A release event SHALL match the distribution pin, and deployment SHALL use that release's immutable source and attached site. Missing, corrupt or mismatched assets SHALL fail before deployment. Delivery SHALL remain incomplete until deployment and public checks succeed.
+Every published Reballance release in iwonz/reballance SHALL trigger mandatory Pages preparation and deployment of its matching Web archive and checksum. A missing Web asset SHALL fail the workflow rather than silently skip publication. Release delivery SHALL remain incomplete until its Pages workflow succeeds. Manual dispatch SHALL allow redeploying an existing v<version> release tag. The landing SHALL come from the immutable release source. No Ballance build or manifest SHALL be required.
 
 #### Scenario: Publish Web release
-- **WHEN** a verified distribution release is published
-- **THEN** its downloads contain both games and the exact site deployed to Pages without a Unity license
+- **WHEN** a release is published with its Web archive and checksum
+- **THEN** the hosted workflow downloads, validates, and deploys those files without requiring a Unity license
 
 #### Scenario: Missing Web asset
-- **WHEN** either edition lacks any required platform archive or checksum, or the site archive differs from the pinned inputs
-- **THEN** validation fails and the previously deployed site remains intact
-
-#### Scenario: Update or roll back one edition
-- **WHEN** a new distribution pins a different verified source version for one edition
-- **THEN** the other edition keeps identical version and artifact checksums, and the new release includes the entire pair
+- **WHEN** a release is published without its required Web archive or checksum
+- **THEN** the Pages workflow fails visibly and that release is not reported as completely delivered
 
 #### Scenario: Redeploy older version
-- **WHEN** the workflow is manually dispatched with an unchanged distribution pin
-- **THEN** it verifies and redeploys that release's attached site, regardless of later landing changes on main
+- **WHEN** the workflow is manually dispatched with a valid older release tag
+- **THEN** that release's verified Web content becomes the deployed site
 
 ### Requirement: Deployment permissions and browser verification
-Pages SHALL use GitHub Actions with intended release refs allowed. Serialized deployment
-SHALL verify both public identities within a bounded wait and fail on stale identity.
-Acceptance SHALL include HTTP-served menu, level and control checks for both editions.
+Pages setup SHALL use the GitHub Actions source and permit the intended release tags in its deployment environment. After deployment, the workflow SHALL verify that the served release identity matches the requested tag and fail if it cannot observe that identity within a bounded wait. Release verification SHALL include an HTTP-served menu and level gameplay check; opening index.html as a local file SHALL NOT count as browser verification.
 
 #### Scenario: Release readiness
-- **WHEN** a release is declared delivered
-- **THEN** verification identifies both public URLs and actual gameplay checks
+- **WHEN** a Web release is declared verified
+- **THEN** its record identifies the served URL and actual menu, level-loading, and control checks performed
 
 #### Scenario: Stale deployed site
-- **WHEN** either public identity differs from the requested manifest after deployment
-- **THEN** verification fails rather than reporting success
+- **WHEN** deployment completes but the public site continues to report a different release tag
+- **THEN** the verification step fails instead of reporting a successful rollout
 
 ## ADDED Requirements
 
@@ -67,28 +52,21 @@ divider below its header. Keyboard focus SHALL remain visible on those controls.
 - **THEN** no focus outline appears as a line beneath the header, and Tab navigation still highlights the header controls
 
 ### Requirement: Bilingual game landing
-The root SHALL show a responsive Russian/English landing explaining Ballance history,
-Original, Remaster, materials, presets, downloads and attribution. Browser language
-SHALL choose the initial language with an explicit switch available. Header play
-links SHALL lead to working Original and Remaster players without loading Unity on
-the landing. Reduced-motion and keyboard navigation SHALL be supported.
+The root SHALL show a responsive Russian/English Reballance landing with history,
+materials, presets, downloads and attribution. Browser language SHALL select the
+initial language with an explicit switch. A play link SHALL lead to play/ without
+loading Unity on the landing. Reduced motion and keyboard navigation SHALL work.
+The classic Ballance project SHALL be an external link, not a bundled player.
 
 #### Scenario: First visit
-- **WHEN** a Russian-language browser opens the root
-- **THEN** it sees the Russian landing and two play choices without downloading a player
+- **WHEN** a Russian-language browser opens /reballance/
+- **THEN** it sees the Russian Reballance landing and can open /reballance/play/ without downloading a Ballance player
 
-### Requirement: Stable Original browser storage
-Original SHALL launch at original.html in the former root page directory with its
-resources under original/. Remaster SHALL launch under remaster/. Hosting changes
-SHALL preserve Original's saved profile and all requests SHALL retain the repository prefix.
+### Requirement: Independent site and storage
+Reballance SHALL use /reballance/play/ and its own application identity. Classic
+Ballance SHALL remain hosted independently at /ballance/. Publication or rollback
+of one repository SHALL NOT modify the other game's artifacts or player data.
 
-#### Scenario: Returning Original player
-- **WHEN** a browser with an existing root-hosted v1.0.11 save opens original.html
-- **THEN** its saved data is available and no Remaster data is imported
-
-### Requirement: Switch between games
-Each hosted player SHALL offer keyboard-accessible links to the landing and the other edition, with Russian/English labels. Switching SHALL navigate between independent player pages, preserving their storage directories and not loading both Unity runtimes together.
-
-#### Scenario: Switch from either game
-- **WHEN** the player follows the edition switch link
-- **THEN** the other game opens at its own stable URL under the same repository prefix
+#### Scenario: Publish Reballance
+- **WHEN** an accepted Reballance release is deployed
+- **THEN** its site contains only Reballance and the existing Ballance site and browser save directory remain unchanged

@@ -19,15 +19,18 @@ new ball abilities, deep terrain simulation or iOS delivery.
 
 ### Editions and delivery
 
-Create the annotated original/v1.0.11 alias and original branch at d066bfe5. Use an
-ignored worktree for Original and keep main for Remaster/site; no full branch merges.
-Original retains product and application IDs. Remaster uses Reballance and
-com.iwonz.BallanceRemaster, independently numbered development builds until a release is verified.
-An edition descriptor is read by build/packaging tooling; no runtime edition toggle.
-Edition source tags are <edition>/v<version>, assets <Product>-<version>-<platform>.
-Public distributions use release/v<version> on main and contain both independently versioned games.
-Legacy v1.0.11 remains downloadable with its original files. Do not reuse binaries
-under a new version. Release identity includes edition, tag, version and SHA-256.
+The final topology is two independent repositories: iwonz/ballance main maintains
+classic Ballance; iwonz/reballance main owns Reballance. Preserve the complete
+Reballance history in the new repository before restoring the classic tracked tree
+on the old main with a normal commit. Preserve old tags/releases and the original
+branch tip under an archival tag before removing that redundant remote branch.
+Use independent clones and Unity caches, not linked worktrees. Keep old identities,
+GUIDs, package IDs, native plugins and save namespaces unchanged. New public tags
+use v<version> separately in each repository. Legacy source tags remain historical.
+Reballance keeps com.iwonz.BallanceRemaster and development versions until accepted.
+Source, feedback and package-documentation links point to the owning repository;
+localized keys and package identities remain unchanged. No force-push or history rewrite is needed. Move local Reballance caches/builds to
+its own checkout; leave only classic caches/builds in the Ballance checkout.
 
 ### Environment and contact state
 
@@ -102,18 +105,23 @@ services; unloading a live level still unregisters its owned handlers normally.
 
 ### Site and Pages
 
-Vanilla HTML/CSS/JS in site, RU/EN with browser-language initial selection. Use real
-game captures for claims, labelled concepts only for direction. Header links to
-original.html and remaster/. Original's HTML remains at the repository root directory;
-its assets move under original/ with only host paths rewritten, preserving storage.
-Do not preload either Unity instance on the landing. Keep original release.json at
-original/release.json, remaster at remaster/release.json and an aggregate root manifest.
+Vanilla HTML/CSS/JS in site, RU/EN with browser-language initial selection. The
+Reballance repository owns its landing and one player under play/. Use real captures
+for claims and label concept art. Do not preload Unity on the landing. Link to the
+independent classic project instead of bundling its player. Ballance remains at
+/ballance/ with unchanged Web storage. Reballance has not been publicly deployed;
+its first public storage directory is /reballance/play/.
 
-site/releases.json schema 2 pins one distribution tag and both source tags with SHA-256 hashes for WebGL, Windows, Linux, macOS and Android. Null release/remaster pins remain a deliberate publication barrier until gameplay acceptance. The local release preparer verifies all ten packaged artifacts and sidecars, assembles the existing two-player site, and stages one flat upload directory with the players, site archive/checksum, manifest, license, credits and release notes linking both source tags. Reuse an unchanged edition's bytes rather than renaming or rebuilding it.
-
-The Pages workflow selects the approved distribution from main, then checks out that immutable release tag. It downloads the one release's assets, verifies the manifest and all platform hashes, reconstructs the site from its pinned Web inputs and source, and compares the attached site file-for-file before deployment. The attached site is the deployed artifact. Reject unsafe extraction and total size above 1,000,000,000 bytes. Serialize deployment and verify the distribution and both edition identities by HTTP. Update or roll back one game through a new complete distribution while preserving the other pin. Never resolve a game's version through latest.
-
-Inject small localized navigation links into both hosted player pages, outside Unity; retain keyboard focus and stable Original storage paths. Keep the classic footer reachable on narrow/mobile screens by sizing the Web canvas container around it; desktop game presentation remains unchanged. README owns the introductory guide and version-labelled screenshot galleries. CREDITS.md inventories attribution and carries the exact upstream notice; release assets and the site include it and LICENSE. GPL code rights and separately licensed game data are described separately; branding does not grant new rights over inherited content.
+Remove unified release manifests, ten-artifact staging and cross-player injection.
+Each repository's v<version> release includes its five platform archives and SHA-256
+sidecars. Pages downloads only that repository's Web archive and checksum and validates
+its product, version, safe extraction and size. Reballance staging atomically adds the
+landing and LICENSE/CREDITS from the immutable release source. Manual dispatch pins
+a release tag for rollback. Serialize deployments and verify the served identity.
+The classic legacy releases remain deployable without requiring a new Unity build.
+README owns each project's introduction and real version-labelled screenshot gallery.
+Keep upstream-first Credits and the verbatim rights notice in both repositories.
+No public Reballance release/Pages launch before the required gameplay acceptance.
 
 ## Risks / Trade-offs
 
@@ -121,7 +129,7 @@ Inject small localized navigation links into both hosted player pages, outside U
   retain dry measurements and complete all 91 level/preset combinations.
 - New art is expensive in Web memory/frame time: reuse material families and limit
   texture/particle budgets; measure each weather case and combined site size.
-- Two branches duplicate maintenance: small explicit cherry-picks preserve isolation.
+- Two repositories duplicate maintenance: transfer and test focused shared fixes.
 - Hardware is not guaranteed available: report missing devices honestly and leave
   acceptance tasks open; build success is not gameplay/performance certification.
 - Existing baseline has persistence and package-trust gaps: do not erase user data
@@ -129,10 +137,10 @@ Inject small localized navigation links into both hosted player pages, outside U
 
 ## Migration Plan
 
-Preserve Original refs first. Implement and validate locally without replacing live
-v1.0.11. Keep the distribution manifest unready until Remaster gameplay acceptance is complete.
-Prepare one draft distribution with both verified five-platform artifact sets, publish, wait for
-Pages, then exercise both public games. Never overwrite the immutable baseline.
+Push and verify Reballance history first, then restore classic ownership on the old
+main. Check both repositories and source identities before archiving the redundant
+original branch. Existing Ballance v1.0.11 release/Pages remain valid and unchanged.
+Reballance publication waits for its outstanding acceptance independently.
 
 ## Validation
 
@@ -259,8 +267,7 @@ The user explicitly authorized meaningful commits, tags, pushes, both releases a
 Pages publication, then required Reballance publication to wait for full gameplay
 acceptance. Do not publish it as a prerelease workaround. Keep outstanding 91-run
 and performance evidence explicit; unavailable physical Android/reference-PC tests
-remain marked unrun as already agreed. The two-game Pages launch waits for eligible
-working builds of both editions in one unified distribution release.
+remain marked unrun as already agreed. Reballance Pages waits for its eligible working build; Ballance publication is independent.
 
 The interface icon inventory also includes dynamically instantiated touch keypads.
 Use the same atlas for directional/camera buttons and the joystick thumb, retaining

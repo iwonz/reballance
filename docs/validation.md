@@ -141,8 +141,8 @@ For Web, serve over HTTP beneath a prefix such as `/ballance/`; test packaged
 release content as well as build output when publication code changes. Observe
 network failures and browser/Unity logs. Check user-initiated audio playback;
 an AudioContext or source counter alone does not establish audible sound.
-For Pages, wait for the workflow's public `release.json` check, verify its distribution tag and both edition pins
-match the published release, and test both deployed players and switch links. A release is not fully delivered
+For Pages, wait for the workflow's public `release.json` check, verify its tag and Web checksum
+match the published release, and test the deployed Reballance player and return link. A release is not fully delivered
 until Pages serves that version successfully.
 
 For Android, signature, zipalign, native LOAD alignment, and APK content inspection
@@ -278,7 +278,7 @@ directed checks explicitly set sectors and ball types: they do **not** count as
 For a native flat-course replay:
 
 ```sh
-python3 scripts/measure-physics.py .worktrees/original/Assets/BallancePhysics/Plugins/macOS/libbphysics.dylib --output Builds/checks/original-replay.json
+python3 scripts/measure-physics.py ../Ballance/Assets/BallancePhysics/Plugins/macOS/libbphysics.dylib --output Builds/checks/original-replay.json
 python3 scripts/measure-physics.py Assets/BallancePhysics/Plugins/macOS/libbphysics.dylib --output Builds/checks/remaster-replay.json --compare Builds/checks/original-replay.json
 ```
 
@@ -295,13 +295,10 @@ M3 gate above as additional evidence; measure QHD/4K separately. Record actual
 internal render dimensions, quality, preset, sector, device/API, frame percentiles,
 1% low method, CPU/GPU, memory and cold loading.
 
-For publication, run `prepare-release.py verify` against the complete unified
-release: all ten pinned artifacts, sidecars, manifest, notices and attached site.
-It compares the site against `prepare-site.py` output from the immutable release
-source. Check the distribution and both public identities with `verify-site.py`. Use an isolated browser profile to test
-Original progress at the old root URL, reload it at `original.html`, then verify
-Remaster reset cannot alter it. A two-player HTTP success does not establish input,
-recovery, save compatibility or independent release rollback.
+For publication, run `prepare-site.py` with the exact tagged Web archive and sidecar.
+Test the landing and player under `/reballance/`, including RU/EN, keyboard navigation,
+mobile widths, restart, persistence and the return link. The workflow checks the served
+release identity; those checks do not establish full gameplay acceptance or performance.
 
 ## Remaster visual authoring checks
 

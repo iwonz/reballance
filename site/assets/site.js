@@ -2,13 +2,13 @@ const ru = {
   skip: 'Перейти к содержимому', playOriginal: 'Играть в Ballance', playRemaster: 'Играть в Reballance',
   heroEyebrow: 'Немного смелости. Немного равновесия.', heroTitle: 'Небо по-прежнему\nждёт вас.',
   heroLead: 'Деревянный шар, узкая тропа и мир над облаками. Вернитесь к ощущению, которое помните.',
-  discover: 'Заново открыть Ballance ↓', heroCredit: 'Архивный кадр из игры · реконструкция на Unity', heroIndex: 'ОДНО ПУТЕШЕСТВИЕ. ДВЕ РЕДАКЦИИ.',
+  discover: 'Заново открыть Ballance ↓', heroCredit: 'Reballance 1.0.0-dev.11 · игровой кадр', heroIndex: 'ЗНАКОМЫЙ МИР. НОВЫЙ ВЗГЛЯД.',
   heroAlt: 'Деревянный шар на каменной трассе, парящей над облаками', originalAlt: 'Игровой кадр Ballance',
   storyEyebrow: 'Начало', storyTitle: 'Некоторые игры\nостаются с нами.',
   storyA: 'Ballance, созданная Cyparade, построила целый мир на равновесии, инерции и высоте. Каменные тропы, деревянные мосты и стальные рельсы требуют не только точности, но и терпения.',
   storyB: 'Дерево, камень и бумага — больше, чем внешний вид. У каждого шара свой вес и своя роль. Найти нужный материал — часть поиска пути.',
-  storyC: 'Этот независимый проект продолжает открытую Unity-реконструкцию Happy Dreamfish (imengyu). Он сохраняет классическую редакцию и даёт Reballance пространство для развития.',
-  originalEyebrow: 'Знакомые ощущения', originalText: 'Классическая реконструкция на Unity: привычные трассы, меню, обучение и механика. Версия 1.0.11 сохранена как постоянная исходная точка, с отдельной веткой для исправлений и совместимости.',
+  storyC: 'Этот независимый проект продолжает открытую Unity-реконструкцию Happy Dreamfish (imengyu). Reballance развивается в собственном репозитории; классический Ballance поддерживается отдельно.',
+  originalEyebrow: 'Знакомые ощущения', originalText: 'Классическая реконструкция на Unity: привычные трассы, меню, обучение и механика. Версия 1.0.11 сохранена как постоянная исходная точка, с независимой поддержкой в репозитории iwonz/ballance.',
   originalNote: 'Это классическая реконструкция на Unity, а не оригинальный коммерческий исполняемый файл Cyparade.',
   sourceTag: 'Открыть сохранённые исходники ↗', originalCaption: 'Архивный игровой кадр. Классические трассы с независимой поддержкой.',
   remasterEyebrow: 'Reballance', remasterTitle: 'То же чувство удивления.\nБольше деталей вокруг.',
@@ -21,8 +21,8 @@ const ru = {
   conceptAlt: 'Концепты ясной погоды, дождя, тумана, снега, песка и джунглей',
   conceptCaption: 'КОНЦЕПТ ХУДОЖЕСТВЕННОГО НАПРАВЛЕНИЯ · Предоставленный референс, а не кадр текущей Reballance.',
   downloadsEyebrow: 'Расположитесь поудобнее', downloadsTitle: 'Играйте в браузере.\nИли скачайте игру.',
-  downloadsText: 'Ballance 1.0.11 доступен для Web, Windows, Linux, macOS и Android. Загрузки Reballance появятся вместе с проверенным релизом.',
-  downloadOriginal: 'Скачать Ballance 1.0.11 ↗', project: 'Исходный код и разработка ↗', separateSaves: 'У каждой редакции свои настройки и прогресс. Сохранения не переносятся автоматически.',
+  downloadsText: 'Reballance предназначен для Web, Windows, Linux, macOS и Android. Загрузки сопровождают каждый проверенный релиз.',
+  downloadOriginal: 'Скачать Reballance ↗', project: 'Исходный код и разработка ↗', separateSaves: 'У каждой редакции свои настройки и прогресс. Сохранения не переносятся автоматически.',
   credits: 'Оригинальная игра: Cyparade. Реконструкция на Unity: Happy Dreamfish / imengyu. Этот форк и Reballance: iwonz. Независимый проект сообщества.', license: 'Лицензия и авторство ↗'
 };
 const presets = [
@@ -38,9 +38,9 @@ const translatable = [...document.querySelectorAll('[data-i18n]')];
 const english = new Map(translatable.map(node => [node.dataset.i18n, [...node.childNodes].map(child => child.nodeName === 'BR' ? '\n' : child.textContent).join('')]));
 const englishAlt = new Map([...document.querySelectorAll('[data-alt]')].map(node => [node.dataset.alt, node.alt]));
 let language = navigator.language.toLowerCase().startsWith('ru') ? 'ru' : 'en';
-try { const saved = localStorage.getItem('ballance.site.language'); if (['ru','en'].includes(saved)) language = saved; } catch {}
+try { const saved = localStorage.getItem('reballance.site.language'); if (['ru','en'].includes(saved)) language = saved; } catch {}
 let selected = 0;
-let distribution = null;
+let release = null;
 const buttons = presets.map((preset, index) => {
   const button = document.createElement('button');
   button.type = 'button';
@@ -66,35 +66,30 @@ function renderLanguage() {
   const button = document.querySelector('#language');
   button.textContent = language === 'ru' ? 'EN' : 'RU';
   button.setAttribute('aria-label', language === 'ru' ? 'Switch to English' : 'Переключить на русский');
-  document.title = language === 'ru' ? 'Ballance — Над облаками' : 'Ballance — Above the clouds';
+  document.title = language === 'ru' ? 'Reballance — Над облаками' : 'Reballance — Above the clouds';
   renderPresets();
-  renderDistribution();
+  renderRelease();
 }
-function renderDistribution() {
-  if (!distribution) return;
-  const original = distribution.editions.original.tag.split('/').pop().replace(/^v/, '');
-  const remaster = distribution.editions.remaster.tag.split('/').pop().replace(/^v/, '');
-  document.querySelector('[data-i18n="downloadsText"]').textContent = language === 'ru'
-    ? `Один релиз: Ballance ${original} и Reballance ${remaster}. Обе игры для пяти платформ, контрольные суммы и полный архив сайта.`
-    : `One release: Ballance ${original} and Reballance ${remaster}. Both games for five platforms, checksums and the complete site archive.`;
+function renderRelease() {
+  if (!release) return;
   const link = document.querySelector('[data-i18n="downloadOriginal"]');
-  link.textContent = language === 'ru' ? 'Скачать обе игры ↗' : 'Download both games ↗';
-  link.href = 'https://github.com/iwonz/ballance/releases/tag/' + distribution.release;
-  document.querySelector('[data-i18n="development"]').textContent = `Reballance ${remaster}`;
+  link.textContent = (language === 'ru' ? 'Скачать Reballance ' : 'Download Reballance ') + release.version + ' ↗';
+  link.href = 'https://github.com/iwonz/reballance/releases/tag/' + encodeURIComponent(release.tag);
+  document.querySelector('[data-i18n="development"]').textContent = `Reballance ${release.version}`;
 }
 document.querySelector('#language').addEventListener('click', () => {
   language = language === 'ru' ? 'en' : 'ru';
-  try { localStorage.setItem('ballance.site.language', language); } catch {}
+  try { localStorage.setItem('reballance.site.language', language); } catch {}
   renderLanguage();
 });
 renderLanguage();
-fetch('releases.json').then(response => {
-  if (!response.ok) throw new Error('Release manifest unavailable');
+fetch('release.json').then(response => {
+  if (!response.ok) throw new Error('Release identity unavailable');
   return response.json();
 }).then(value => {
-  if (value.schema === 2 && /^release\/v\d+\.\d+\.\d+(?:-[\w.-]+)?$/.test(value.release)
-      && typeof value.editions?.original?.tag === 'string' && typeof value.editions?.remaster?.tag === 'string') {
-    distribution = value;
-    renderDistribution();
+  if (value.edition === 'remaster' && /^v\d+\.\d+\.\d+(?:-[\w.-]+)?$/.test(value.tag)
+      && value.version === value.tag.slice(1)) {
+    release = value;
+    renderRelease();
   }
 }).catch(() => {});

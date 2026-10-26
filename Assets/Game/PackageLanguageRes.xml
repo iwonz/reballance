@@ -79,7 +79,7 @@
     <Text name="core.ui.LevelLoaderErrorUIMessage">关卡开发者：您可以按 F12 进入控制台查看更多错误信息。
 玩家：如果这是第三方玩家制作的关卡，您可以向制作者反馈错误信息。
 如果这是游戏自带关卡，您可以点击 “提交BUG” 或访问 
-https://github.com/iwonz/ballance/issues/ 向我们反馈错误
+https://github.com/iwonz/reballance/issues/ 向我们反馈错误
     </Text>
     <Text name="core.ui.LevelLoaderErrorUISubmitBug">提交BUG</Text>
     <Text name="core.ui.LevelLoaderErrorUICopyErrInfo">复制错误信息</Text>
@@ -197,7 +197,7 @@ Ballance 平衡球 是一款滚球游戏。
 
 如果你在某个时候遇到困难或需要一些技术帮助，请查看“Ballance HTML帮助”，它可以通过Windows开始菜单访问（不是在游戏期间！）。
 
-额外提示：上面是原版提示。如果你遇到了游戏的BUG或是有新的建议，请前往项目 https://github.com/iwonz/ballance/issues/ 向我们提交 Issues 反馈错误。
+额外提示：上面是原版提示。如果你遇到了游戏的BUG或是有新的建议，请前往项目 https://github.com/iwonz/reballance/issues/ 向我们提交 Issues 反馈错误。
 
 欢迎前往 Ballance 吧讨论游戏！
 
@@ -207,8 +207,8 @@ Ballance 平衡球 是一款滚球游戏。
 
 保留熟悉的空中赛道，同时探索天气与表面覆盖带来的变化。本项目并非 Cyparade 商业原作的官方发行版。
 
-源代码与反馈：https://github.com/iwonz/ballance
-开发与关卡文档：https://github.com/iwonz/ballance/tree/main/docs</Text>
+源代码与反馈：https://github.com/iwonz/reballance
+开发与关卡文档：https://github.com/iwonz/reballance/tree/main/docs</Text>
     <Text name="core.ui.Remaster.Settings">环境与画面</Text>
     <Text name="core.ui.Remaster.Environment">环境</Text>
     <Text name="core.ui.Remaster.Quality">画质</Text>
@@ -417,7 +417,7 @@ Music: {10}</Text>
     <Text name="core.ui.LevelLoaderErrorUIMessage">Level developer: you can press F12 to open console to view more error information.
 Player: if this is a level made by a third party player, you can feed back error information to the producer.
 If this is the game's original level, you can click "Submit bug" or visit
-https://github.com/iwonz/ballance/issues/ Feedback errors to us.
+https://github.com/iwonz/reballance/issues/ Feedback errors to us.
     </Text>
     <Text name="core.ui.LevelLoaderErrorUISubmitBug">Submit bug</Text>
     <Text name="core.ui.LevelLoaderErrorUICopyErrInfo">Copy error message</Text>
@@ -529,8 +529,8 @@ Quit the tutorial with "RETURN" ...
 
 Explore familiar sky courses with weather and surface coverings. This is an independent project, not the original commercial release by Cyparade.
 
-Source and feedback: https://github.com/iwonz/ballance
-Development and level documentation: https://github.com/iwonz/ballance/tree/main/docs</Text>
+Source and feedback: https://github.com/iwonz/reballance
+Development and level documentation: https://github.com/iwonz/reballance/tree/main/docs</Text>
     <Text name="core.ui.Remaster.Settings">Environment &amp; graphics</Text>
     <Text name="core.ui.Remaster.Environment">Environment</Text>
     <Text name="core.ui.Remaster.Quality">Quality</Text>
@@ -665,7 +665,7 @@ Look ahead, choose the right ball and take your time on narrow paths. You can re
     <Text name="core.ui.LevelLoaderErrorUIMessage">關卡開發者：您可以按F12進入控制台查看更多錯誤資訊。
 玩家：如果這是協力廠商玩家製作的關卡，您可以向製作者迴響錯誤資訊。
 如果這是遊戲自帶關卡，您可以點擊“提交BUG”或訪問
-https://github.com/iwonz/ballance/issues/ 向我們迴響錯誤
+https://github.com/iwonz/reballance/issues/ 向我們迴響錯誤
     </Text>
     <Text name="core.ui.LevelLoaderErrorUISubmitBug">提交BUG</Text>
     <Text name="core.ui.LevelLoaderErrorUICopyErrInfo">複製錯誤資訊</Text>
@@ -780,7 +780,7 @@ https://github.com/iwonz/ballance/issues/ 向我們迴響錯誤
 
 如果你在某個時候遇到困難或需要一些科技幫助，請查看“Ballance HTML幫助”，它可以通過Windows開始菜單訪問（不是在遊戲期間！）。
 
-額外提示：上面是原版提示。 如果你遇到了遊戲的BUG或是有新的建議，請前往項目 https://github.com/iwonz/ballance/issues/ 向我們提交Issues迴響錯誤。
+額外提示：上面是原版提示。 如果你遇到了遊戲的BUG或是有新的建議，請前往項目 https://github.com/iwonz/reballance/issues/ 向我們提交Issues迴響錯誤。
 
 歡迎前往Ballance吧討論遊戲！
 
@@ -790,8 +790,8 @@ https://github.com/iwonz/ballance/issues/ 向我們迴響錯誤
 
 保留熟悉的空中賽道，同時探索天氣與表面覆蓋帶來的變化。本專案並非 Cyparade 商業原作的官方發行版。
 
-原始碼與回饋：https://github.com/iwonz/ballance
-開發與關卡文件：https://github.com/iwonz/ballance/tree/main/docs</Text>
+原始碼與回饋：https://github.com/iwonz/reballance
+開發與關卡文件：https://github.com/iwonz/reballance/tree/main/docs</Text>
     <Text name="core.ui.Remaster.Settings">環境與畫面</Text>
     <Text name="core.ui.Remaster.Environment">環境</Text>
     <Text name="core.ui.Remaster.Quality">畫質</Text>
@@ -999,7 +999,7 @@ https://github.com/iwonz/ballance/issues/ 向我們迴響錯誤
     <Text name="core.ui.LevelLoaderErrorUITitle">Не удалось загрузить уровень</Text>
     <Text name="core.ui.LevelLoaderErrorUIMessage">Разработчик уровня: нажмите F12, чтобы открыть консоль с подробностями ошибки.
 Игрок: если это пользовательский уровень, сообщите об ошибке его автору.
-Если ошибка возникла на встроенном уровне, нажмите «Сообщить об ошибке» или откройте https://github.com/iwonz/ballance/issues.</Text>
+Если ошибка возникла на встроенном уровне, нажмите «Сообщить об ошибке» или откройте https://github.com/iwonz/reballance/issues.</Text>
     <Text name="core.ui.LevelLoaderErrorUISubmitBug">Сообщить об ошибке</Text>
     <Text name="core.ui.LevelLoaderErrorUICopyErrInfo">Скопировать ошибку</Text>
     <Text name="core.ui.ErrorUIErrInfoCopied">Сведения об ошибке скопированы!</Text>
@@ -1101,8 +1101,8 @@ https://github.com/iwonz/ballance/issues/ 向我們迴響錯誤
 
 Знакомые трассы в небе дополняют погода и покрытия. Проект не является оригинальным коммерческим выпуском Cyparade.
 
-Исходный код и обратная связь: https://github.com/iwonz/ballance
-Документация для разработки и уровней: https://github.com/iwonz/ballance/tree/main/docs</Text>
+Исходный код и обратная связь: https://github.com/iwonz/reballance
+Документация для разработки и уровней: https://github.com/iwonz/reballance/tree/main/docs</Text>
     <Text name="core.ui.Remaster.Settings">Окружение и графика</Text>
     <Text name="core.ui.Remaster.Environment">Окружение</Text>
     <Text name="core.ui.Remaster.Quality">Качество</Text>
