@@ -981,3 +981,19 @@ Repository separation is complete. The gameplay/visual/hardware tasks above are
 still open; no release or Pages launch is authorized merely by this source move.
 The delivery-record CI check may remain red on subsequent ongoing-change commits
 until the full OpenSpec change is actually verified and archived.
+
+## Matching README structure and ancestry — 2026-10-26
+
+Both guides use the same nine ordered sections, matching platform/guide tables and
+four actual screenshots per game. The full history is Cyparade → imengyu/Ballance →
+iwonz/ballance → Reballance. Reballance's introduction and Credits identify
+iwonz/ballance as the direct base, including Russian localization and multiplatform/
+Web support, and describe Reballance as iwonz's personal creative hobby project.
+
+Verification: an assert-based comparison confirmed heading equality, four images
+each, lineage links, local targets, exact rights-notice preservation and unchanged
+LICENSE/component inventory. Both repositories passed context checks, strict
+OpenSpec validation (14 items before the classic documentation archive), and
+`git diff --check`. Prose diffs were reviewed. No game build, release or Pages
+deployment was needed. Task 9.1 is complete; the remaining implementation/gameplay
+acceptance work stays open.

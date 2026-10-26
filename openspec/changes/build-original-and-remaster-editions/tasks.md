@@ -63,3 +63,7 @@ Section 8 supersedes their publication topology; unfinished gameplay acceptance 
 - [x] 8.2 Replace combined release/site tooling with standalone versioned Reballance publication; test identity, corruption, unsafe archives, size and no-overwrite rejection.
 - [x] 8.3 Update the landing, README, gallery, attribution and maintained guides for separate repositories; preserve the complete upstream rights notice.
 - [x] 8.4 Verify the remote history and local checks, record migration evidence and limitations. Restore classic Ballance main and archive the obsolete original branch only after preservation is verified.
+
+## 9. Matching project guides and lineage
+
+- [x] 9.1 Align both README structures and navigation; identify iwonz/ballance as Reballance's immediate base and the full Cyparade/imengyu/iwonz lineage, update Credits, and verify links, galleries, rights notice and context checks.

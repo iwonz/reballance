@@ -1,13 +1,25 @@
 # Reballance
 
-A new perspective on the paths above the clouds.
+A personal take on the paths above the clouds.
 
-Reballance develops modern materials, dense clouds, a refreshed interface and seven
-weather presets for the Unity reconstruction of Cyparade's **Ballance**. It builds
-on **[imengyu/Ballance](https://github.com/imengyu/Ballance)** by Happy Dreamfish.
-Wood, stone and paper retain their roles across the 13 classic levels.
+**Reballance** is iwonz's hobby project built on
+**[iwonz/ballance](https://github.com/iwonz/ballance)**, the maintained Ballance fork with
+Russian localization and multiplatform support. It explores a personal vision of the familiar game
+through new materials, clouds, menus and weather. Its roots lead through imengyu's
+Unity recreation to Cyparade's original Ballance.
 
-[Development](#development) · [Screenshots](#screenshots) · [Releases](https://github.com/iwonz/reballance/releases) · [Credits](#credits)
+Guide wood, stone and paper balls through the 13 classic levels above the clouds.
+
+[Play and download](#play-and-download) · [Project history](#project-history) · [Screenshots](#screenshots) · [Development](#development) · [Credits](#credits)
+
+## Project history
+
+1. **Ballance — Cyparade.** The original game introduced the wood, stone and paper balls and their paths above the clouds.
+2. **[imengyu/Ballance](https://github.com/imengyu/Ballance) — mengyu / Happy Dreamfish.** The open-source Unity recreation provided the foundation for these projects.
+3. **[iwonz/ballance](https://github.com/iwonz/ballance) — iwonz.** A maintained fork of that recreation, adding Russian localization, compatibility updates and builds for Windows, Linux, macOS, Android and the Web, while preserving the classic experience.
+4. **[iwonz/reballance](https://github.com/iwonz/reballance) — iwonz.** A personal hobby project built on **iwonz/ballance**: an imaginative take on the familiar game, experimenting with materials, clouds, menus and weather.
+
+Each step builds on the work before it. The Unity projects are community reconstructions and adaptations; Cyparade created the original game.
 
 ## Project status
 
@@ -22,13 +34,25 @@ independently in **[iwonz/ballance](https://github.com/iwonz/ballance)** and is 
 commercial Cyparade executable. Each has its own releases, application identity,
 settings and saves; progress is not automatically transferred.
 
-## Play and build
+## Play and download
 
-Until the first accepted release, build locally using the instructions below.
-The release targets are Web, Windows x86-64, Linux x86-64, macOS ARM64 and Android
-ARM64. iOS is deferred. Published downloads will be named
-`Reballance-<version>-<platform>` with SHA-256 sidecars. The future Pages landing is
-`https://iwonz.github.io/reballance/`; its player will use `play/`.
+Reballance has no public release yet. Build locally using [Development](#development)
+until gameplay acceptance is complete. The table describes the planned downloads;
+accepted builds will appear in [this repository's releases](https://github.com/iwonz/reballance/releases).
+
+| Platform | Release asset | Requirements / launch |
+| --- | --- | --- |
+| Web | `Reballance-<version>-WebGL.tar.gz` | After release: play on GitHub Pages, or serve a local build over HTTP; WebGL 2 and WebAssembly required |
+| Windows | `Reballance-<version>-Windows.zip` | x86-64, Windows 10 21H1+; extract and run `Reballance.exe` |
+| Linux | `Reballance-<version>-Linux.tar.gz` | x86-64, Ubuntu 22.04/24.04; extract and run `./Reballance.x86_64` |
+| macOS | `Reballance-<version>-macOS.zip` | Apple Silicon, macOS 13.1+; extract `Reballance.app` |
+| Android | `Reballance-<version>-Android.apk` | ARM64, Android 8.0+; install the test-signed APK |
+
+See [Unity player requirements](https://docs.unity3d.com/6000.6/Documentation/Manual/system-requirements.html#player)
+for graphics/driver requirements. macOS is ad-hoc signed without notarization;
+see [first-launch notes](docs/macos-apple-silicon.md). **iOS is deferred.** Historical
+Intel macOS and Unity 2021 builds of the earlier Ballance reconstruction remain in
+[imengyu’s releases](https://github.com/imengyu/Ballance/releases).
 
 Keyboard bindings and touch layouts are under **Settings → Controls**. Choose from
 Standard, Standard + Weather, Moscow, London, Sahara, Hong Kong and California in
@@ -36,12 +60,15 @@ settings. Environment is independent of graphics quality and does not partition
 records or change score/timer rules. Custom levels without environment profiles
 retain their authored surroundings and dry physics.
 
+External C# DLL mods require Mono desktop builds; Web and Android need their source
+compiled into the player. See the build guide for content and packaging details.
+
 ## Screenshots
 
 Actual local Web captures, not concept images or full acceptance evidence.
 [Versions and provenance](docs/images/README.md).
 
-### Reballance · 1.0.0-dev.11
+**Captured build: Reballance · 1.0.0-dev.11**
 
 Work in progress: presentation, weather tuning and full gameplay acceptance remain under development.
 
@@ -54,22 +81,22 @@ Work in progress: presentation, weather tuning and full gameplay acceptance rema
 ## Development
 
 Use **Unity 6000.6.7f1**, pinned in `ProjectSettings/ProjectVersion.txt`, with the
-required platform modules, Git and Python 3.12+. Rendering uses Built-in and uGUI;
-ball physics uses native IVP. [OpenSpec setup](openspec/README.md#tooling) specifies
-its Node/CLI versions.
+platform modules you need. Install Git and Python 3.12+; the [OpenSpec setup](openspec/README.md#tooling)
+specifies Node and CLI requirements. The game uses Built-in rendering, uGUI and native
+IVP ball physics.
 
 ```sh
 git clone https://github.com/iwonz/reballance.git
 cd reballance
 ```
 
-Open this directory in Unity and use `Assets/Scenes/Main.unity`. Set `GameEntry`
-to **Debug Type → NoDebug** for normal play. This clone owns its own `Library`,
-`Temp`, `Builds` and native plugins; do not share them with Ballance.
+Open this directory in Unity and use `Assets/Scenes/Main.unity`. Select `GameEntry`
+and set **Debug Type → NoDebug** for normal play. Keep this clone's `Library`, `Temp`,
+`Builds` and physics plugins separate from Ballance.
 
 1. Read [AGENTS.md](AGENTS.md), the [source map](docs/architecture.md) and [OpenSpec workflow](openspec/README.md).
-2. Develop on `main` or focused feature branches. Transfer shared fixes from Ballance as small verified commits; do not merge the complete projects.
-3. Run the [relevant checks](docs/validation.md), record results and archive each change only when complete.
+2. Develop on `main` or focused feature branches. Transfer applicable fixes between repositories as small tested commits; do not merge the complete games.
+3. Run the [relevant checks](docs/validation.md), record actual results and archive the change only when complete.
 
 Build the player **with all game content**:
 
@@ -80,15 +107,13 @@ python3 -m http.server 8000 --directory Builds/WebGL
 # Open http://localhost:8000/
 ```
 
-Other target arguments are `macOS`, `Windows`, `Linux` and `Android`. The
-[build guide](docs/build-and-release.md) covers modules, native plugins, signing and
-installation cleanup. macOS builds are ad-hoc signed, not notarized; Android builds
-are test-signed. Development applications use `Reballance-dev.app`.
+Other targets: `macOS`, `Windows`, `Linux`, `Android`. See the
+[build guide](docs/build-and-release.md) for modules, packaging and local Mac cleanup.
+Stable Mac installs use `Reballance.app`; temporary builds use `Reballance-dev.app`.
 
-For debugging, click the About version eight times, enable developer mode and
-restart. F12 opens the console; `help` lists commands. Use a test profile for commands
-that alter progress. External DLL mods require Mono desktop builds; Web and Android
-need their source compiled into the player.
+For debugging, click the About version eight times, enable developer mode and restart.
+F12 opens the console; `help` lists commands. Use a test profile for commands that
+change progress or scores.
 
 ## Releases and Pages
 
@@ -96,7 +121,8 @@ Reballance uses its own **`v<version>`** tags and GitHub Releases. Each accepted
 contains its five platform builds and checksums. Its Pages workflow validates the
 matching Web archive and deploys that player with the landing from the release's
 immutable source. Manual dispatch with an earlier tag rolls back only Reballance.
-No Ballance build, shared manifest or combined distribution is required.
+The future landing will be `https://iwonz.github.io/reballance/`, with its player
+under `play/`. No Ballance build, shared manifest or combined distribution is required.
 
 Follow the [release procedure](docs/build-and-release.md#github-pages). The first
 public release still requires completion of gameplay acceptance; moving repositories
@@ -107,21 +133,31 @@ does not waive it. Classic Ballance releases are unaffected.
 | Guide | Contents |
 | --- | --- |
 | [Repository independence](docs/editions.md) | Source ownership, identities and shared fixes |
-| [Architecture](docs/architecture.md) | Capability map, boundaries and known gaps |
-| [Build and release](docs/build-and-release.md) | Builds, single-project releases, Pages and Mac cleanup |
-| [Validation](docs/validation.md) | Checks, gameplay/device acceptance and performance evidence |
+| [Architecture](docs/architecture.md) | Capability map and implementation boundaries |
+| [Build and release](docs/build-and-release.md) | Complete player/content builds, releases and Pages |
+| [Validation](docs/validation.md) | Automated checks, gameplay and device evidence |
 | [OpenSpec](openspec/README.md) | Proposal through verification and archive |
-| [Native physics](BallancePhysics/README.md) | C++/C# bridge and reproducible native builds |
+| [macOS](docs/macos-apple-silicon.md) | ARM64 plugin, signing and first launch |
 | [Translations](HelpTranslate.md) | Localized resources and UI checks |
+| [Native physics](BallancePhysics/README.md) | C++/C# bridge and reproducible builds |
 
-Maintained documentation is English. Gameplay localization and original notices
+Maintained documentation is English; gameplay localization and original notices
 retain their languages.
 
 ## Credits
 
-First, **[imengyu/Ballance](https://github.com/imengyu/Ballance)** by **mengyu / Happy Dreamfish (imengyu)**: the upstream Unity recreation this project originated from. Reballance builds on that work and its contributors' efforts.
+**Direct base: [iwonz/ballance](https://github.com/iwonz/ballance)** by **iwonz**.
+Reballance builds on this maintained fork, including its Russian localization,
+compatibility work and multiplatform/Web support.
 
-**Cyparade** created the original Ballance. **iwonz** maintains Reballance and the separate classic [Ballance fork](https://github.com/iwonz/ballance). Native physics derives from [nillerusr/source-physics](https://github.com/nillerusr/source-physics). Thanks also to the bundled tool, UI, compression, font and localization contributors; [CREDITS.md](CREDITS.md) lists their projects and retained notices.
+**Earlier upstream: [imengyu/Ballance](https://github.com/imengyu/Ballance)** by
+**mengyu / Happy Dreamfish (imengyu)**, whose Unity recreation made that fork
+possible. **Cyparade** created the original Ballance. **iwonz** develops Reballance
+as a personal creative experiment on top of that lineage.
+
+Native physics derives from [nillerusr/source-physics](https://github.com/nillerusr/source-physics).
+Thanks also to the bundled tool, UI, compression, font and localization contributors;
+[CREDITS.md](CREDITS.md) lists their projects and retained notices.
 
 ## License and original game rights
 

@@ -120,7 +120,11 @@ landing and LICENSE/CREDITS from the immutable release source. Manual dispatch p
 a release tag for rollback. Serialize deployments and verify the served identity.
 The classic legacy releases remain deployable without requiring a new Unity build.
 README owns each project's introduction and real version-labelled screenshot gallery.
-Keep upstream-first Credits and the verbatim rights notice in both repositories.
+Keep identical README section order in both repositories, with the full lineage:
+Cyparade's game, imengyu's Unity recreation, iwonz's localized multiplatform Ballance,
+and Reballance as iwonz's creative experiment built on that fork. Reballance links
+first to its immediate base iwonz/ballance, retaining imengyu and Cyparade credit.
+Preserve the verbatim rights notice in both repositories.
 No public Reballance release/Pages launch before the required gameplay acceptance.
 
 ## Risks / Trade-offs

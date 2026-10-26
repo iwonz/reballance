@@ -15,7 +15,7 @@ player, save namespace, and Pages deployment currently couple these products.
   gradual runtime switching, shared visual/contact state, checkpoint restoration and
   environment-independent records. Extend native IVP rather than substituting Unity physics.
 - Publish a bilingual Reballance landing and its verified player at /reballance/play/. Ballance remains independently hosted at /ballance/, preserving its browser storage. Remove the combined distribution manifest and release coupling.
-- Rewrite README with repository ownership, run/development instructions, each game's real screenshot gallery, upstream-first Credits and the unchanged upstream rights notice for both editions.
+- Rewrite README with repository ownership, run/development instructions, each game's real screenshot gallery, direct-upstream Credits tracing Cyparade → imengyu/Ballance → iwonz/ballance → Reballance and the unchanged upstream rights notice for both editions.
 - Validate all five existing release platforms, the 91 level/preset combinations,
   frame-rate independence and actual hardware performance before claiming completion.
 
