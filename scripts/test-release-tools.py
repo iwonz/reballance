@@ -200,10 +200,13 @@ class ReleaseTests(unittest.TestCase):
             validate_build_identity(self.root, self.web, "1.0.1")
 
     def site_fixture(self):
+        with (self.web / "index.html").open("a") as stream:
+            stream.write('<a id="home" href="../">About</a>location.assign(new URL("../", location.href))')
         self.archive_web()
         source = self.root / "site"
         source.mkdir()
-        (source / "index.html").write_text('<a href="play/">Play Reballance</a>')
+        shutil.copyfile(Path(__file__).resolve().parents[1] / "site/play.html", source / "play.html")
+        (source / "unused-landing-art.png").write_bytes(b"not deployed")
         for name in ("LICENSE", "CREDITS.md"):
             (self.root / name).write_text(name)
         return source
@@ -212,9 +215,21 @@ class ReleaseTests(unittest.TestCase):
         source = self.site_fixture()
         identity = site.prepare(self.download, self.destination, self.tag, source)
         self.assertEqual(json.loads((self.destination / "release.json").read_text()), identity)
-        self.assertEqual(json.loads((self.destination / "play/release.json").read_text()), identity)
+        self.assertFalse((self.destination / "play/release.json").exists())
         self.assertEqual((self.destination / "CREDITS.md").read_text(), "CREDITS.md")
         self.assertFalse((self.destination / "original").exists())
+        self.assertFalse((self.destination / "unused-landing-art.png").exists())
+        self.assertIn('content="0; url=../"', (self.destination / "play/index.html").read_text())
+        html = (self.destination / "index.html").read_text()
+        self.assertNotIn('http-equiv="refresh"', html)
+        self.assertIn('productVersion: "1.0.0"', html)
+        self.assertIn('href="https://github.com/iwonz/reballance#readme"', html)
+        self.assertIn('location.assign(document.querySelector("#home").href)', html)
+        self.assertNotIn('href="../"', html)
+        for directory in ("Build", "StreamingAssets"):
+            for path in (self.web / directory).rglob("*"):
+                if path.is_file():
+                    self.assertEqual(path.read_bytes(), (self.destination / path.relative_to(self.web)).read_bytes())
         with self.assertRaisesRegex(RuntimeError, "empty"):
             site.prepare(self.download, self.destination, self.tag, source)
 
@@ -224,16 +239,26 @@ class ReleaseTests(unittest.TestCase):
             site.prepare(self.download, self.destination, self.tag, source, limit=1)
         self.assertEqual(list(self.destination.iterdir()), [])
 
-    def test_site_rejects_symlink_and_reserved_path(self):
+    def test_site_rejects_missing_or_symlink_entry(self):
         source = self.site_fixture()
-        (source / "link").symlink_to("index.html")
-        with self.assertRaisesRegex(RuntimeError, "Unsafe"):
+        entry = source / "play.html"
+        entry.unlink()
+        with self.assertRaisesRegex(RuntimeError, "entry page"):
             site.prepare(self.download, self.destination, self.tag, source)
-        (source / "link").unlink()
-        (source / "play").mkdir()
-        with self.assertRaisesRegex(RuntimeError, "reserved"):
+        entry.symlink_to(self.web / "index.html")
+        with self.assertRaisesRegex(RuntimeError, "unsafe"):
             site.prepare(self.download, self.destination, self.tag, source)
         self.assertEqual(list(self.destination.iterdir()), [])
+
+    def test_current_host_navigation_is_preserved(self):
+        source = self.site_fixture()
+        template = Path(__file__).resolve().parents[1] / "Assets/WebGLTemplates/Remaster/index.html"
+        html = template.read_text().replace('{{{ JSON.stringify(PRODUCT_NAME) }}}', '"Reballance"')
+        html = html.replace('{{{ JSON.stringify(PRODUCT_VERSION) }}}', '"1.0.0"')
+        (self.web / "index.html").write_text(html)
+        self.archive_web()
+        site.prepare(self.download, self.destination, self.tag, source)
+        self.assertEqual((self.destination / "index.html").read_text(), html)
 
 
 if __name__ == "__main__":

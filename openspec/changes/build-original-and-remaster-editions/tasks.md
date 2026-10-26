@@ -35,7 +35,8 @@ Section 8 supersedes their publication topology; unfinished gameplay acceptance 
 
 ## 5. Site and publication
 
-- [ ] 5.1 Build responsive RU/EN landing using actual Reballance captures with its play link, attribution and reduced motion; verify keyboard/mobile/language behavior without Unity downloads.
+The user removed the landing requirement on 2026-10-26. Direct game entry and its
+publication are owned by `open-reballance-directly`; no landing acceptance remains.
 - [ ] 5.2 Implement standalone Reballance Pages preparation and deployment, site-size validation and tag-pinned rollback; pass archive/workflow tests and its public identity check.
 - [x] 5.3 Preserve Original browser storage at original.html with edition-specific resource paths; test an existing profile, independent Remaster reset and all subpath requests.
 

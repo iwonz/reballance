@@ -31,7 +31,7 @@ jobs:
     steps:
       - uses: actions/checkout@v7
         with:
-          ref: ${{ inputs.tag || github.event.release.tag_name }}
+          ref: ${{ github.sha }}
           persist-credentials: false
       - name: Download and verify Web release
         id: prepare
@@ -72,8 +72,10 @@ jobs:
           for attempt in {1..30}; do
             if curl --fail --silent --show-error --max-time 5 \
               "${PAGE_URL%/}/release.json?tag=$RELEASE_TAG&attempt=$attempt" -o deployed-release.json \
+              && curl --fail --silent --show-error --max-time 5 "${PAGE_URL%/}/?host=$GITHUB_SHA" -o deployed-entry.html \
+              && grep -F 'id="unity-canvas"' deployed-entry.html \
               && jq -e --arg tag "$RELEASE_TAG" --arg sha "$EXPECTED_SHA" '.tag == $tag and .sha256 == $sha and .edition == "remaster"' deployed-release.json; then
-              echo "Verified $RELEASE_TAG at $PAGE_URL" >> "$GITHUB_STEP_SUMMARY"
+              echo "Verified $RELEASE_TAG at $PAGE_URL (host $GITHUB_SHA)" >> "$GITHUB_STEP_SUMMARY"
               exit 0
             fi
             sleep 5

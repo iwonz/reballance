@@ -33,7 +33,7 @@ replayable, and show current input bindings and appropriate touch guidance.
 
 #### Scenario: Web restart or exit
 - **WHEN** Remaster settings require a restart or the player exits through the game menu
-- **THEN** pending saves are synchronized before the browser reloads Remaster or returns to the landing
+- **THEN** pending saves are synchronized before the browser reloads Remaster or opens the repository README
 - **AND** synchronization failure leaves a visible error instead of silently navigating away
 
 ### Requirement: Independent rendering and environment settings

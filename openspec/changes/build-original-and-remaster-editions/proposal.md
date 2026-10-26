@@ -14,7 +14,7 @@ player, save namespace, and Pages deployment currently couple these products.
 - Add seven environment presets, authored profiles for all thirteen built-in levels,
   gradual runtime switching, shared visual/contact state, checkpoint restoration and
   environment-independent records. Extend native IVP rather than substituting Unity physics.
-- Publish a bilingual Reballance landing and its verified player at /reballance/play/. Ballance remains independently hosted at /ballance/, preserving its browser storage. Remove the combined distribution manifest and release coupling.
+- Publish the verified Reballance player at /reballance/ with direct entry owned by the scoped hosting change. Ballance remains independently hosted at /ballance/, preserving its browser storage. Remove the combined distribution manifest and release coupling.
 - Rewrite README with repository ownership, run/development instructions, each game's real screenshot gallery, direct-upstream Credits tracing Cyparade → imengyu/Ballance → iwonz/ballance → Reballance and the unchanged upstream rights notice for both editions.
 - Validate all five existing release platforms, the 91 level/preset combinations,
   frame-rate independence and actual hardware performance before claiming full environment qualification. Initial publication uses the user-approved simplified release checks with explicit limitations.
@@ -30,7 +30,7 @@ player, save namespace, and Pages deployment currently couple these products.
 - `player-persistence`: Edition isolation and shared Reballance records with preservation of earlier development scores.
 - `physics-runtime`: Dynamic per-contact surface profiles and reproducible native builds.
 - `platform-builds`: Edition-aware identity and release asset validation.
-- `web-publication`: Independent Reballance landing and verified single-player publication.
+- `web-publication`: Verified single-player publication; direct entry is owned by open-reballance-directly.
 
 ## Impact
 
@@ -42,3 +42,7 @@ package IDs, legacy release files and user work remain intact. Original presenta
 is unchanged. iOS, new abilities, deep deformable terrain, and automatic cross-edition
 save import are outside this change. Hardware and all-level acceptance remain unfinished qualification work, not inferred
 from a successful build, publication or historical tests.
+
+The user removed the separate landing on 2026-10-26. The scoped
+open-reballance-directly change owns direct entry and hosting-only deployment;
+this change no longer requires a promotional landing.

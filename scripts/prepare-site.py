@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Stage the Reballance landing and one verified Web player atomically."""
+"""Stage direct Reballance entry and one verified Web player atomically."""
 import argparse
 import importlib.util
 import os
@@ -20,22 +20,21 @@ def prepare(download, destination, tag, site=Path("site"), limit=SITE_LIMIT):
     with tempfile.TemporaryDirectory(prefix="reballance-site-", dir=destination.parent) as temporary:
         staging = Path(temporary) / "public"
         staging.mkdir()
-        for source in site.rglob("*"):
-            relative = source.relative_to(site)
-            if source.is_symlink() or relative.parts[0] in {"play", "release.json"}:
-                raise RuntimeError("Unsafe or reserved site source: " + str(relative))
-            if source.is_file():
-                target = staging / relative
-                target.parent.mkdir(parents=True, exist_ok=True)
-                shutil.copyfile(source, target)
-        if not (staging / "index.html").is_file():
-            raise RuntimeError("Missing landing page")
+        identity = pages.prepare(download, staging, tag)
         for name in ("LICENSE", "CREDITS.md"):
             shutil.copyfile(site.parent / name, staging / name)
-        player = staging / "play"
-        player.mkdir()
-        identity = pages.prepare(download, player, tag)
-        shutil.copyfile(player / "release.json", staging / "release.json")
+        entry = site / "play.html"
+        if entry.is_symlink() or not entry.is_file():
+            raise RuntimeError("Missing or unsafe legacy player entry page")
+        legacy = staging / "play"
+        legacy.mkdir()
+        shutil.copyfile(entry, legacy / "index.html")
+        # Keep published game bytes; adapt the former landing navigation in legacy hosts.
+        index = staging / "index.html"
+        html = index.read_text()
+        html = html.replace('id="home" href="../"', 'id="home" href="https://github.com/iwonz/reballance#readme"')
+        html = html.replace('location.assign(new URL("../", location.href))', 'location.assign(document.querySelector("#home").href)')
+        index.write_text(html)
         (staging / ".nojekyll").touch()
         size = sum(path.stat().st_size for path in staging.rglob("*") if path.is_file())
         if size > limit:

@@ -119,10 +119,11 @@ change progress or scores.
 
 Reballance uses its own **`v<version>`** tags and GitHub Releases. Each accepted release
 contains its five platform builds and checksums. Its Pages workflow validates the
-matching Web archive and deploys that player with the landing from the release's
-immutable source. Manual dispatch with an earlier tag rolls back only Reballance.
-The landing is [iwonz.github.io/reballance](https://iwonz.github.io/reballance/), with its player
-under `play/`. No Ballance build, shared manifest or combined distribution is required.
+matching Web archive and deploys that player with hosting files from the workflow's
+immutable commit. Classic Ballance has its own independent release process.
+[GitHub Pages](https://iwonz.github.io/reballance/) loads the game directly at the
+site root. Earlier `/play/` browser saves are not transferred. No Ballance
+build, shared manifest or combined distribution is required.
 
 Follow the [release procedure](docs/build-and-release.md#github-pages): build and
 package all five targets, verify available Mac/Web flows and disclose unrun checks.

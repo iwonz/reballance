@@ -296,8 +296,8 @@ internal render dimensions, quality, preset, sector, device/API, frame percentil
 1% low method, CPU/GPU, memory and cold loading.
 
 For publication, run `prepare-site.py` with the exact tagged Web archive and sidecar.
-Test the landing and player under `/reballance/`, including RU/EN, keyboard navigation,
-mobile widths, restart, persistence and the return link. The workflow checks the served
+Test direct root rendering at `/reballance/`, old `/play/` bookmarks, keyboard navigation,
+mobile widths, restart, persistence and the About/exit link to the repository README. The workflow checks the served
 release identity; those checks do not establish full gameplay acceptance or performance.
 
 ## Remaster visual authoring checks

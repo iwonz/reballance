@@ -48,7 +48,7 @@ layout textures. It does not modify mesh vertices or collision geometry. Inspect
 repeat seams, scale, highlights, ball rotation and each material under all presets
 before accepting the assets. `RemasterReliefAuthoring.Generate` now creates explicit material-specific normal, height and roughness data; see the relief pipeline below. Glass uses Built-in Standard transparency; rubber, brass and concrete have explicit material assignments. Full material acceptance remains outstanding. `RemasterBallVisual` refines only the three player render meshes; paper keeps the imported mesh as its explicit native convex source. Wood and stone retain their original native sphere radii. Runtime silhouette changes still require player inspection.
 
-The landing's weather contact sheet is the user-supplied concept reference and
+The archived landing's weather contact sheet is the user-supplied concept reference and
 is labelled as such. Archive images come from the repository's DemoImages.
 Replace or supplement them with verified Remaster captures as implementation
 reaches acceptance; never relabel a concept as an in-game screenshot.

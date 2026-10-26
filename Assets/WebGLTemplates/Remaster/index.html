@@ -26,7 +26,7 @@
 </head>
 <body>
   <main id="player">
-    <header><strong>REBALLANCE</strong><a id="home" href="../">About the game</a><button id="fullscreen" disabled>Full screen</button></header>
+    <header><strong>REBALLANCE</strong><a id="home" href="https://github.com/iwonz/reballance#readme">About the game</a><button id="fullscreen" disabled>Full screen</button></header>
     <div class="stage">
       <canvas id="unity-canvas" width="{{{ WIDTH }}}" height="{{{ HEIGHT }}}" tabindex="0" aria-label="Reballance"></canvas>
       <div id="loading" role="status"><strong>REBALLANCE</strong><span id="loading-label">Loading Reballance</span><progress max="1" value="0" aria-labelledby="loading-label"></progress></div>
@@ -84,7 +84,7 @@
         leaving = true;
         instance.Quit().then(() => {
           if (event.detail.restart) location.reload();
-          else location.assign(new URL("../", location.href));
+          else location.assign(document.querySelector("#home").href);
         }).catch(failure);
       });
       const fullscreen = document.querySelector("#fullscreen");

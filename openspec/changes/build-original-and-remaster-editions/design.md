@@ -105,20 +105,11 @@ services; unloading a live level still unregisters its owned handlers normally.
 
 ### Site and Pages
 
-Vanilla HTML/CSS/JS in site, RU/EN with browser-language initial selection. The
-Reballance repository owns its landing and one player under play/. Use real captures
-for claims and label concept art. Do not preload Unity on the landing. Link to the
-independent classic project instead of bundling its player. Ballance remains at
-/ballance/ with unchanged Web storage. Reballance has not been publicly deployed;
-its first public storage directory is /reballance/play/.
+The user removed the landing on 2026-10-26. The scoped open-reballance-directly
+change owns direct entry, host provenance and public deployment. Reballance runs at /reballance/; the user accepts the new browser
+save namespace without importing the earlier /play/ profile. Classic Ballance remains independent at /ballance/. Each repository owns
+its versioned game archives, identity, size checks and serialized Pages deployments.
 
-Remove unified release manifests, ten-artifact staging and cross-player injection.
-Each repository's v<version> release includes its five platform archives and SHA-256
-sidecars. Pages downloads only that repository's Web archive and checksum and validates
-its product, version, safe extraction and size. Reballance staging atomically adds the
-landing and LICENSE/CREDITS from the immutable release source. Manual dispatch pins
-a release tag for rollback. Serialize deployments and verify the served identity.
-The classic legacy releases remain deployable without requiring a new Unity build.
 README owns each project's introduction and real version-labelled screenshot gallery.
 Keep identical README section order in both repositories, with the full lineage:
 Cyparade's game, imengyu's Unity recreation, iwonz's localized multiplatform Ballance,
@@ -161,7 +152,7 @@ The historical Web player stops rendering after an in-game restart/exit because
 Application.Quit does not reload its browser host. Remaster's shared quit entry
 uses a Web-only JavaScript bridge: wait for Unity's automatic persistence queue,
 finish an explicit save sync, then notify the host to quit the instance and reload
-or return to the parent landing. Failure is visible and must not navigate away.
+or leave for the repository README. Failure is visible and must not navigate away.
 The bridge is pinned to the exact editor's IDBFS implementation and tested with
 delayed-success/failure fixtures and actual language restart in the player.
 
@@ -212,7 +203,7 @@ The native medium-quality menu remained too expensive after the first optimizati
 
 The latest naming request uses Ballance for the classic macOS application, retaining its original bundle ID and signed contents. Installation migrates the earlier Ballance Original path through the same verified replacement and duplicate cleanup. Validate the application launcher as well as Spotlight; an unregistered historical LaunchServices record alone is not evidence of a visible duplicate.
 
-Use Ballance and Reballance as the public product names throughout current documentation and the RU/EN landing. Keep original/remaster technical IDs, release tag prefixes, and existing archive names compatible; historical verification records retain the names actually tested.
+Use Ballance and Reballance as the public product names throughout current documentation and the Web host. Keep original/remaster technical IDs, release tag prefixes, and existing archive names compatible; historical verification records retain the names actually tested.
 
 The final public remaster name is Reballance. Update the generated title artwork, runtime text, all four localizations, native product names, Web host and RU/EN site together. Keep the existing com.iwonz.BallanceRemaster application identifier, remaster technical IDs and preference keys for compatibility. Desktop file storage must continue to resolve the existing pre-rename data directory; a product display-name change must not strand existing profiles. The installer migrates the former app path and removes only matching installed bundles. New Remaster archives use Reballance while published archive names remain immutable.
 

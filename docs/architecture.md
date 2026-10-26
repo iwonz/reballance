@@ -12,7 +12,7 @@ in change records. Check selection is centralized in [validation.md](validation.
 | `Assets/System` | Startup, package/services framework, UI primitives, resource paths, editor checks |
 | `Assets/Game` | Core package, gameplay, menus, original levels, level loading and editor authoring |
 | `Assets/Game/Remaster` | Remaster environment, rendering, UI and isolated settings/records |
-| `site` | Standalone Reballance bilingual landing |
+| `site` | Legacy /play/ bookmark redirect |
 | `Assets/Packages` | Six built-in resource/mod packages and package templates |
 | `Assets/BallancePhysics` | Managed native-physics wrapper, editor inspectors, shipped plugins |
 | `BallancePhysics` | C++ bridge and pinned-source patch; see its AGENTS.md |
@@ -349,12 +349,14 @@ and CI requirements. Native rebuild provenance lives in
 
 [Contract](../openspec/specs/web-publication/spec.md).
 [Pages workflow](../.github/workflows/github-pages.yml) deploys this repository's
-requested release only, from its immutable `v<version>` source.
+requested release only; hosting files come from the workflow's immutable commit.
 [release_identity.py](../scripts/release_identity.py) validates Reballance tag and
 application identity. [prepare-pages.py](../scripts/prepare-pages.py) validates the
 Web checksum, archive safety, size, content and embedded identity.
-[prepare-site.py](../scripts/prepare-site.py) atomically stages the landing, notices
-and player under `play/`, enforcing the complete site's 1 GB limit.
+[prepare-site.py](../scripts/prepare-site.py) atomically stages the player at the root, notices
+and a legacy `play/` bookmark redirect, enforcing the complete site's 1 GB limit.
+The old Web profile is not imported, as authorized; native saves are unchanged. It adapts legacy About/exit host links to the repository README
+without changing the released game binaries or content.
 The workflow checks the served release tag and SHA-256 after deployment.
 
 The [release guide](build-and-release.md#github-pages) owns setup and rollback.

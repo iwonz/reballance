@@ -107,20 +107,27 @@ qualification is tracked separately; disclose unfinished checks in release notes
    repository. Create a draft release with all five archives/checksums plus `LICENSE`
    and `CREDITS.md`. Inspect uploads before publishing. Existing versions are immutable.
 4. Publication runs [the Pages workflow](../.github/workflows/github-pages.yml). It
-   checks out the release tag, downloads its Reballance Web archive and sidecar,
-   validates content/product/version and safe extraction, and stages `site/` with the
-   player under `play/`. No classic Ballance assets or shared manifest are needed.
+   checks out the immutable workflow commit, downloads the selected release's Web
+   archive and sidecar, validates content/product/version and safe extraction, and
+   stages the player at the root with an old-bookmark redirect from `site/play.html`.
+   No classic Ballance assets or shared manifest are needed.
 5. Wait for deployment and public `release.json` tag/checksum validation. Exercise
    loading, menu, level control, save recovery and return at the public URL before
    calling delivery complete. Missing Web files or failed Pages means delivery failed.
 
-The landing is `https://iwonz.github.io/reballance/`; the player uses
-`https://iwonz.github.io/reballance/play/`. Unity saves follow that page directory.
-The landing is RU/EN and loads no Unity runtime before Play. Concept references are
-labelled; actual screenshots identify their captured build.
+`https://iwonz.github.io/reballance/` renders the game directly at that URL.
+Old `/reballance/play/` bookmarks redirect to the root, preserving query and fragment.
+The user accepted a new browser save namespace; the old /play/ profile is not imported
+or deleted. Native saves are unaffected. About and successful exit lead to the
+repository README; restart reloads the player. The preparer adapts those two legacy
+host links for v1.0.0 without changing Build or StreamingAssets files, published
+archives, checksums or version identity.
 
+Host-only updates do not require new Unity players or replacement release assets.
+Push the host change, then dispatch Pages from main with the existing release tag.
+The run records its host commit separately from the selected game version.
 Use a new empty output path and a directory containing only the selected Web archive
-and checksum to preview the exact site from the tagged checkout:
+and checksum to preview the site from the intended host checkout:
 
 ```sh
 python3 scripts/prepare-site.py Builds/web-release Builds/site-preview v1.0.0
@@ -129,11 +136,13 @@ python3 -m http.server 8000 --directory Builds/site-preview
 
 Replace the example tag with the actual accepted release. The preparer rejects
 corrupt/mismatched archives, links, traversal, nonempty destinations and sites over
-1,000,000,000 bytes. It includes LICENSE and CREDITS.md and writes matching root/player
-release identities.
+1,000,000,000 bytes. It includes LICENSE and CREDITS.md and writes the public
+release identity at the root.
 
 To roll back, manually dispatch `github-pages.yml` with the earlier published tag.
-It uses that release's immutable source and Web bytes, without changing Ballance.
+The selected workflow ref supplies hosting files; the tag input selects immutable
+game bytes. To roll back hosting as well, choose its earlier workflow ref. Neither
+operation changes Ballance.
 Releases created with `GITHUB_TOKEN` do not trigger another workflow automatically;
 explicitly dispatch Pages for the same tag in that automation and verify completion.
 Do not weaken identity checks or publish unaccepted builds to make deployment green.
