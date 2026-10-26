@@ -5,5 +5,5 @@
 
 ## 2. Delivery
 
-- [ ] 2.1 Prepare v1.0.0 unchanged game bytes, commit/push and deploy Pages; verify root automatic entry, identity and menu in the public browser.
-- [ ] 2.2 Record actual checks and limits, synchronize specs, archive the scoped change and push the final verified record.
+- [x] 2.1 Prepare v1.0.0 unchanged game bytes, commit/push and deploy Pages; verify root automatic entry, identity and menu in the public browser.
+- [x] 2.2 Record actual checks and limits, synchronize specs, archive the scoped change and push the final verified record.
