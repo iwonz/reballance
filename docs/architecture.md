@@ -364,6 +364,11 @@ Classic Ballance publication is independent in its own repository.
 
 ## Known gaps
 
+- The Reballance global loading screen still uses the legacy BALLANCE / REMASTER
+  title in [GameGlobalIngameLoading](../Assets/System/Scripts/UI/CoreUI/GameGlobalIngameLoading.cs).
+  Complete this remaining branding detail with the active UI work; the later menu
+  and application already use Reballance.
+
 - Dormant ray-query wrappers need a separately verified repair before use: the managed
   single-hit wrapper calls the object-query delegate; the multi-hit wrapper leaves its
   lists uninitialized, and native multi-hit allocation/iteration/cleanup is inconsistent.
