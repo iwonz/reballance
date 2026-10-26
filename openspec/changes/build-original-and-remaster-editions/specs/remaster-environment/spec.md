@@ -66,9 +66,14 @@ materials, checkpoints and moving mechanisms, frame-rate-independent input and r
 performance measurements. Concept art or a test slice SHALL NOT count as completed
 level-wide implementation or runtime evidence.
 
-#### Scenario: Release qualification
-- **WHEN** the first complete Remaster is reported delivered
+#### Scenario: Complete environment qualification
+- **WHEN** full environment acceptance is claimed
 - **THEN** verification includes the 91 level/preset results and identifies tested hardware and limitations
+
+#### Scenario: Initial public release
+- **WHEN** the first public release is published before full environment qualification
+- **THEN** all five builds, archives, checksums and available native/Web smoke flows are verified, and release notes explicitly disclose unfinished full playthroughs and unavailable hardware
+- **AND** publication does not mark the remaining environment qualification complete
 
 #### Scenario: Directed runtime integration
 - **WHEN** automated checks directly select sectors or create ball types

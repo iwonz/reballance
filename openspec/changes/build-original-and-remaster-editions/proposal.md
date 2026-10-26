@@ -17,7 +17,7 @@ player, save namespace, and Pages deployment currently couple these products.
 - Publish a bilingual Reballance landing and its verified player at /reballance/play/. Ballance remains independently hosted at /ballance/, preserving its browser storage. Remove the combined distribution manifest and release coupling.
 - Rewrite README with repository ownership, run/development instructions, each game's real screenshot gallery, direct-upstream Credits tracing Cyparade → imengyu/Ballance → iwonz/ballance → Reballance and the unchanged upstream rights notice for both editions.
 - Validate all five existing release platforms, the 91 level/preset combinations,
-  frame-rate independence and actual hardware performance before claiming completion.
+  frame-rate independence and actual hardware performance before claiming full environment qualification. Initial publication uses the user-approved simplified release checks with explicit limitations.
 
 ## Capabilities
 
@@ -40,5 +40,5 @@ README and operating guides. Unity stays at 6000.6.7f1 with Built-in rendering; 
 dependency or mandatory new rendering package. Existing GUIDs, serialized identifiers,
 package IDs, legacy release files and user work remain intact. Original presentation
 is unchanged. iOS, new abilities, deep deformable terrain, and automatic cross-edition
-save import are outside this change. Hardware and all-level acceptance are required
-work, not inferred from a successful build or historical tests.
+save import are outside this change. Hardware and all-level acceptance remain unfinished qualification work, not inferred
+from a successful build, publication or historical tests.

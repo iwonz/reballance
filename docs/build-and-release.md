@@ -94,7 +94,9 @@ submits builds to a mobile store.
 Reballance releases belong to `iwonz/reballance`, independently of classic Ballance.
 Each `v<version>` tag identifies matching source and five platform builds with SHA-256
 sidecars. Preserve existing releases; never relabel an older player with a new version.
-Do not publish Reballance until its required gameplay acceptance is complete.
+Release acceptance covers all five successful builds, validated archives/checksums
+and available Mac/Web smoke flows. Full 91-playthrough and reference-hardware
+qualification is tracked separately; disclose unfinished checks in release notes.
 
 1. Configure **Settings → Pages → GitHub Actions** and permit release tags in the
    `github-pages` deployment environment.

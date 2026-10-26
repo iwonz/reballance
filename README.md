@@ -23,9 +23,10 @@ Each step builds on the work before it. The Unity projects are community reconst
 
 ## Project status
 
-**In development: 1.0.0-dev.11.** Full gameplay acceptance is unfinished; no public
-Reballance release or Pages deployment has been made. Successful builds and directed
-integration checks do not stand in for complete playthroughs. See the
+**Current release: [1.0.0](https://github.com/iwonz/reballance/releases/tag/v1.0.0).**
+The first public hobby-project release includes all 13 levels and seven environment
+presets. Full 91-playthrough, reference-PC performance and physical Android
+qualification remain unfinished. See the release notes for actual checks and the
 [remaining work and acceptance record](openspec/changes/build-original-and-remaster-editions/tasks.md).
 
 This repository's `main` owns only Reballance. Classic **Ballance** is maintained
@@ -36,13 +37,12 @@ settings and saves; progress is not automatically transferred.
 
 ## Play and download
 
-Reballance has no public release yet. Build locally using [Development](#development)
-until gameplay acceptance is complete. The table describes the planned downloads;
-accepted builds will appear in [this repository's releases](https://github.com/iwonz/reballance/releases).
+[Play Reballance in the browser](https://iwonz.github.io/reballance/) or
+[download the published builds](https://github.com/iwonz/reballance/releases).
 
 | Platform | Release asset | Requirements / launch |
 | --- | --- | --- |
-| Web | `Reballance-<version>-WebGL.tar.gz` | After release: play on GitHub Pages, or serve a local build over HTTP; WebGL 2 and WebAssembly required |
+| Web | `Reballance-<version>-WebGL.tar.gz` | Play on GitHub Pages, or serve a local build over HTTP; WebGL 2 and WebAssembly required |
 | Windows | `Reballance-<version>-Windows.zip` | x86-64, Windows 10 21H1+; extract and run `Reballance.exe` |
 | Linux | `Reballance-<version>-Linux.tar.gz` | x86-64, Ubuntu 22.04/24.04; extract and run `./Reballance.x86_64` |
 | macOS | `Reballance-<version>-macOS.zip` | Apple Silicon, macOS 13.1+; extract `Reballance.app` |
@@ -121,12 +121,13 @@ Reballance uses its own **`v<version>`** tags and GitHub Releases. Each accepted
 contains its five platform builds and checksums. Its Pages workflow validates the
 matching Web archive and deploys that player with the landing from the release's
 immutable source. Manual dispatch with an earlier tag rolls back only Reballance.
-The future landing will be `https://iwonz.github.io/reballance/`, with its player
+The landing is [iwonz.github.io/reballance](https://iwonz.github.io/reballance/), with its player
 under `play/`. No Ballance build, shared manifest or combined distribution is required.
 
-Follow the [release procedure](docs/build-and-release.md#github-pages). The first
-public release still requires completion of gameplay acceptance; moving repositories
-does not waive it. Classic Ballance releases are unaffected.
+Follow the [release procedure](docs/build-and-release.md#github-pages): build and
+package all five targets, verify available Mac/Web flows and disclose unrun checks.
+Publication does not certify full gameplay or performance qualification. Classic
+Ballance releases are unaffected.
 
 ## Documentation
 

@@ -27,7 +27,7 @@ branch tip under an archival tag before removing that redundant remote branch.
 Use independent clones and Unity caches, not linked worktrees. Keep old identities,
 GUIDs, package IDs, native plugins and save namespaces unchanged. New public tags
 use v<version> separately in each repository. Legacy source tags remain historical.
-Reballance keeps com.iwonz.BallanceRemaster and development versions until accepted.
+Reballance keeps com.iwonz.BallanceRemaster; release qualification follows the scoped release record.
 Source, feedback and package-documentation links point to the owning repository;
 localized keys and package identities remain unchanged. No force-push or history rewrite is needed. Move local Reballance caches/builds to
 its own checkout; leave only classic caches/builds in the Ballance checkout.
@@ -125,7 +125,7 @@ Cyparade's game, imengyu's Unity recreation, iwonz's localized multiplatform Bal
 and Reballance as iwonz's creative experiment built on that fork. Reballance links
 first to its immediate base iwonz/ballance, retaining imengyu and Cyparade credit.
 Preserve the verbatim rights notice in both repositories.
-No public Reballance release/Pages launch before the required gameplay acceptance.
+Publication uses the simplified release checks below; full environment acceptance remains tracked separately.
 
 ## Risks / Trade-offs
 
@@ -144,7 +144,7 @@ No public Reballance release/Pages launch before the required gameplay acceptanc
 Push and verify Reballance history first, then restore classic ownership on the old
 main. Check both repositories and source identities before archiving the redundant
 original branch. Existing Ballance v1.0.11 release/Pages remain valid and unchanged.
-Reballance publication waits for its outstanding acceptance independently.
+Reballance publication follows its scoped simplified release checks independently.
 
 ## Validation
 
@@ -268,10 +268,11 @@ global app database. Package before installing; a retired diagnostic can be rest
 by renaming it deliberately. Verify both application catalogs and the visible launcher.
 
 The user explicitly authorized meaningful commits, tags, pushes, both releases and
-Pages publication, then required Reballance publication to wait for full gameplay
-acceptance. Do not publish it as a prerelease workaround. Keep outstanding 91-run
-and performance evidence explicit; unavailable physical Android/reference-PC tests
-remain marked unrun as already agreed. Reballance Pages waits for its eligible working build; Ballance publication is independent.
+Pages publication. On 2026-10-26 the user simplified acceptance: the previous
+91-playthrough publication gate is superseded by build/package validation and
+available native/Web smoke checks. Full gameplay and performance work remains
+explicitly unfinished; unavailable physical Android/reference-PC tests remain unrun.
+Ballance publication is independent.
 
 The interface icon inventory also includes dynamically instantiated touch keypads.
 Use the same atlas for directional/camera buttons and the joystick thumb, retaining
@@ -380,3 +381,18 @@ samples. Keep density, extinction per unit length, light probes, cache dimension
 and weather/physics unchanged. Retain fixed-step screenshots for comparison at
 all presets, headings and both repeat periods. Reject visible banding or silhouette
 loss, and measure the rebuilt player separately; editor render time is not FPS.
+
+## Final release preparation
+
+The user requested final builds/releases/Pages for both independent repositories.
+Prepare a fresh 1.0.0 Reballance candidate with incremented Android build code,
+rebuilding all five players and content from current source. Keep existing dev.11
+archives as provenance, never relabel them. The user has requested simpler release
+acceptance rather than a mandatory full Unity gameplay campaign. Publication is
+authorized after available build/package and player smoke checks, with incomplete
+full gameplay/hardware qualification disclosed. The scoped release-reballance-1-0-0
+change owns delivery; this broader feature change remains open without claiming
+91 full completions or final visual/performance qualification.
+Use the exact content-aware Unity entry point with the graphics backend and bounded
+sequential builds. Validate identities, archives, checksums, native ABI and available
+player flows; do not infer physical-device or 91-run acceptance from compilation.

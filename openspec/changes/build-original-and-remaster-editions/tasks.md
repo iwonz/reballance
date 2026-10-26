@@ -67,3 +67,10 @@ Section 8 supersedes their publication topology; unfinished gameplay acceptance 
 ## 9. Matching project guides and lineage
 
 - [x] 9.1 Align both README structures and navigation; identify iwonz/ballance as Reballance's immediate base and the full Cyparade/imengyu/iwonz lineage, update Credits, and verify links, galleries, rights notice and context checks.
+
+## 10. Final independent release delivery
+
+Delivery is owned by the scoped `release-reballance-1-0-0` change. The user
+superseded the full-playthrough publication gate on 2026-10-26 with available
+build/package and native/Web smoke checks plus explicit limitations. Tasks 6.1
+and 6.2 remain future qualification work, not publication prerequisites.
