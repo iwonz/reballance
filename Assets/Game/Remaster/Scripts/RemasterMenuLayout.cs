@@ -11,7 +11,11 @@ namespace Ballance2.Game.Remaster
     private RectTransform root, shade;
     private Text title, subtitle;
     private Button replay;
-    private bool ready;
+    private bool ready, arranging;
+    private RectTransform touchViewport;
+    private ScrollRect touchScroll;
+    private Vector2 touchScreen;
+    private float touchUnit;
     private static readonly string[] mainButtons = { "ButtonStart", "ButtonHighscroll", "ButtonSettings", "ButtonAbout", "ButtonQuit" };
 
     public static void Install(RectTransform root, bool levels, Action replayTutorial = null)
@@ -51,6 +55,12 @@ namespace Ballance2.Game.Remaster
 
     private void OnEnable() { if (ready) Refresh(); }
     private void OnRectTransformDimensionsChange() { if (ready) Arrange(); }
+    private void LateUpdate()
+    {
+      if (ready && Ballance2.Menu.Touch.MobileControls.Available &&
+          (touchScreen != new Vector2(Screen.width, Screen.height) ||
+           !Mathf.Approximately(touchUnit, Ballance2.Menu.Touch.MobileUILayout.Unit(root)))) Arrange();
+    }
     private void Refresh()
     {
       title.text = levels ? I18N.Tr("core.ui.Remaster.Levels") : "REBALLANCE";
@@ -71,6 +81,84 @@ namespace Ballance2.Game.Remaster
     }
 
     private void Arrange()
+    {
+      if (arranging) return;
+      arranging = true;
+      try {
+        if (Ballance2.Menu.Touch.MobileControls.Available) ArrangeTouch();
+        else ArrangeDesktop();
+      } finally { arranging = false; }
+    }
+
+    private void ArrangeTouch()
+    {
+      touchScreen = new Vector2(Screen.width, Screen.height);
+      touchUnit = Ballance2.Menu.Touch.MobileUILayout.Unit(root);
+      if (touchViewport == null) {
+        touchViewport = new GameObject("Remaster touch menu viewport", typeof(RectTransform), typeof(Image), typeof(RectMask2D), typeof(ScrollRect)).GetComponent<RectTransform>();
+        touchViewport.SetParent(root.parent, false);
+        touchViewport.GetComponent<Image>().color = Color.clear;
+        root.SetParent(touchViewport, false);
+        root.anchorMin = new Vector2(0, 1); root.anchorMax = Vector2.one; root.pivot = new Vector2(.5f, 1);
+        touchScroll = touchViewport.GetComponent<ScrollRect>();
+        touchScroll.viewport = touchViewport; touchScroll.content = root;
+        touchScroll.horizontal = false; touchScroll.movementType = ScrollRect.MovementType.Clamped;
+      }
+      Ballance2.Menu.Touch.MobileUILayout.SafeArea(touchViewport);
+      touchViewport.offsetMin += Vector2.one * 12 * touchUnit;
+      touchViewport.offsetMax -= Vector2.one * 12 * touchUnit;
+      float width = touchViewport.rect.width / touchUnit;
+      bool portrait = width < touchViewport.rect.height / touchUnit;
+      int columns = levels ? (portrait ? 3 : 4) : (portrait ? 1 : 2);
+      int rows = Mathf.CeilToInt((levels ? 13 : mainButtons.Length) / (float)columns);
+      int footerColumns = portrait ? 2 : 4;
+      float header = levels ? 72 : (portrait ? 92 : 72);
+      float total = header + rows * (levels ? 72 : 56) - 8;
+      if (levels) total += 16 + (4 / footerColumns) * 72 - 8;
+      float height = Mathf.Max(total, touchViewport.rect.height / touchUnit);
+      root.sizeDelta = new Vector2(0, height * touchUnit); root.anchoredPosition = Vector2.zero;
+      float contentWidth = levels ? width : Mathf.Min(540, width);
+      float left = (width - contentWidth) * .5f;
+      float top = (height - total) * .5f;
+      if (shade != null) TouchRect(shade, left, 0, contentWidth, height);
+      TouchRect(title.rectTransform, left, top, contentWidth, 40);
+      TouchRect(subtitle.rectTransform, left, top + 40, contentWidth, header - 48);
+      title.resizeTextForBestFit = subtitle.resizeTextForBestFit = false;
+      title.fontSize = Mathf.RoundToInt(28 * touchUnit); subtitle.fontSize = Mathf.RoundToInt(12 * touchUnit);
+      float cell = (contentWidth - (columns - 1) * 8) / columns;
+      for (int i = 0; i < (levels ? 13 : mainButtons.Length); i++) {
+        string name = levels ? (i == 12 ? "ButtonLightZone" : "ButtonLevel" + (i + 1)) : mainButtons[i];
+        TouchAction(root.Find(name) as RectTransform, left + i % columns * (cell + 8), top + header + i / columns * (levels ? 72 : 56), cell, levels ? 64 : 48);
+      }
+      if (levels) {
+        float footerTop = top + header + rows * 72 + 8;
+        float footerCell = (width - (footerColumns - 1) * 8) / footerColumns;
+        var actions = new[] { root.Find("ButtonCustom") as RectTransform, root.Find("ButtonNMO") as RectTransform, (RectTransform)replay.transform, root.Find("ButtonBack") as RectTransform };
+        for (int i = 0; i < actions.Length; i++) TouchAction(actions[i], i % footerColumns * (footerCell + 8), footerTop + i / footerColumns * 72, footerCell, 64);
+      }
+      touchScroll.StopMovement(); touchScroll.verticalNormalizedPosition = 1;
+    }
+
+    private void TouchRect(RectTransform rect, float x, float y, float width, float height)
+    {
+      rect.anchorMin = rect.anchorMax = new Vector2(0, 1); rect.pivot = new Vector2(0, 1);
+      rect.anchoredPosition = new Vector2(x, -y) * touchUnit;
+      rect.sizeDelta = new Vector2(width, height) * touchUnit;
+    }
+    private void TouchAction(RectTransform rect, float x, float y, float width, float height)
+    {
+      if (rect == null) return;
+      TouchRect(rect, x, y, width, height);
+      foreach (var label in rect.GetComponentsInChildren<Text>(true)) {
+        RemasterTheme.Place(label.rectTransform, 0, 0, 1, 1);
+        label.rectTransform.offsetMin = new Vector2(6, 2) * touchUnit;
+        label.rectTransform.offsetMax = new Vector2(-6, -2) * touchUnit;
+        label.resizeTextForBestFit = false; label.fontSize = Mathf.RoundToInt(16 * touchUnit);
+        label.horizontalOverflow = HorizontalWrapMode.Wrap;
+      }
+    }
+
+    private void ArrangeDesktop()
     {
       bool portrait = root.rect.width < root.rect.height * 1.1f;
       if (!levels) {

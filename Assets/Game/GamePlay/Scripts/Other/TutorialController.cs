@@ -44,9 +44,9 @@ namespace Ballance2.Game.GamePlay.Other
         private RectTransform card;
         private Text text;
         private Button next, skip;
-        private int step, skipKey;
+        private int step, continueKey, skipKey, generation;
         private bool active, subscribed, spawned, busy, modal;
-        private float movementHintTime;
+        private float movementHintTime, acceptAfter;
 
         private void Start()
         {
@@ -57,6 +57,8 @@ namespace Ballance2.Game.GamePlay.Other
                     if ((string)args[0] == "beforeStart" && !subscribed) {
                         game.EventBeforeStart.On(BeforeStart);
                         game.EventQuit.On(Quit);
+                        game.EventRestart.On(Quit);
+                        game.EventFall.On(Fall);
                         subscribed = true;
                     } else if ((string)args[0] == "beforeQuit") Detach();
                     return false;
@@ -66,7 +68,6 @@ namespace Ballance2.Game.GamePlay.Other
         private void BeforeStart(params object[] args)
         {
             Cleanup();
-            HideArrows();
             game._ShouldStartByCustom = false;
             game.CanEscPause = true;
             if (RemasterPreferences.GetInt("tutorial.dismissed") != 0) return;
@@ -75,6 +76,7 @@ namespace Ballance2.Game.GamePlay.Other
             game.GamePhysicsWorld.Simulate = false;
             CreateCard();
             BindTriggers();
+
             StartSeq();
         }
 
@@ -100,8 +102,10 @@ namespace Ballance2.Game.GamePlay.Other
             next.onClick.AddListener(Continue);
             skip.onClick.AddListener(Skip);
             RemasterTheme.Apply(card.gameObject);
+            next.navigation = skip.navigation = new Navigation { mode = Navigation.Mode.None };
             foreach (var label in new[] { next.GetComponentInChildren<Text>(), skip.GetComponentInChildren<Text>() }) label.fontSize = 20;
             skip.GetComponentInChildren<Ballance2.UI.Core.Controls.I18NText>().resourceKey = "core.ui.Remaster.SkipTutorial";
+            card.gameObject.AddComponent<TutorialCardLayout>().Initialize(text, next, skip, Ballance2.Menu.Touch.MobileControls.Available);
         }
 
         public void StartSeq() => Show(1, true);
@@ -109,18 +113,29 @@ namespace Ballance2.Game.GamePlay.Other
         private void Show(int value, bool pause)
         {
             if (!active || busy) return;
-            ClearKeys();
+            ClearKeys(); HideArrows();
             step = value; modal = pause;
-            if (pause && spawned) game.PauseLevel(false);
-            game.CanEscPause = !pause;
+            if (pause && spawned && value >= 5) game.PauseLevel(false);
+            if (value == 2 || value == 3) {
+                game.BallManager.SetControllingStatus(BallControlStatus.LockMode);
+                game.CamManager.enabled = true;
+                game.GamePhysicsWorld.Simulate = false;
+            }
+            game.CanEscPause = true;
             if (pause) game._IsCountDownPoint = false;
             text.text = HintText(value, Ballance2.Menu.Touch.MobileControls.Available);
             card.gameObject.SetActive(true);
-            next.gameObject.SetActive(value != 4);
+            next.gameObject.SetActive(true);
             skip.gameObject.SetActive(true);
-            if (value != 4) next.Select();
-            // Escape is reserved by the card while modal; movement bindings remain untouched.
-            if (pause) skipKey = ui.WaitKey(KeyCode.Escape, true, Skip, GamepadButton.B);
+            acceptAfter = Time.unscaledTime + .35f;
+            int currentGeneration = generation, currentStep = step;
+            continueKey = ui.ListenKey(KeyCode.Return, (_, down) => {
+                if (down && generation == currentGeneration && step == currentStep) Continue();
+            }, GamepadButton.A);
+            skipKey = ui.ListenKey(KeyCode.Q, (_, down) => {
+                if (down && generation == currentGeneration && step == currentStep) Skip();
+            }, GamepadButton.B);
+
         }
 
         public static string HintText(int value, bool touch)
@@ -137,17 +152,22 @@ namespace Ballance2.Game.GamePlay.Other
             return result.Replace("{move}", movement).Replace("{rotate}", rotation).Replace("{look}", overhead);
         }
 
+        private bool CanAdvance => active && !busy && card != null && card.gameObject.activeSelf &&
+            !game.IsUserPaused && ui.GetCurrentPage() == null && Time.unscaledTime >= acceptAfter;
+
         private void Continue()
         {
-            if (!active || busy) return;
+            if (!CanAdvance) return;
             ClearKeys();
+            acceptAfter = Time.unscaledTime + .35f;
             if (step == 1) {
                 busy = true;
                 card.gameObject.SetActive(false);
                 game.GamePhysicsWorld.Simulate = true;
                 game.BallManager.KeyListener.IsListenKey = true;
+                int currentGeneration = generation;
                 game._Start(true, () => {
-                    if (!active) return;
+                    if (!active || generation != currentGeneration) return;
                     spawned = true; busy = false;
                     game._ShouldStartByCustom = false;
                     Show(2, true);
@@ -159,16 +179,16 @@ namespace Ballance2.Game.GamePlay.Other
                 movementHintTime = 0;
                 Show(4, false);
             } else {
-                bool finished = step == 10;
+                bool resume = modal, finished = step == 10;
                 HideTutorial();
-                game.ResumeLevel();
+                if (resume) game.ResumeLevel();
                 if (finished) Finish();
             }
         }
 
         private void Skip()
         {
-            if (!active || busy) return;
+            if (!CanAdvance) return;
             bool restart = !spawned;
             bool resume = modal || restart;
             Finish();
@@ -179,9 +199,7 @@ namespace Ballance2.Game.GamePlay.Other
         {
             RemasterPreferences.SetInt("tutorial.dismissed", 1);
             active = false;
-            HideTutorial();
-            ClearTriggers();
-            HideArrows();
+            HideTutorial(); ClearTriggers(); HideArrows();
             game._ShouldStartByCustom = false;
             game.CanEscPause = true;
             game.BallManager.KeyListener.IsListenKey = true;
@@ -189,20 +207,23 @@ namespace Ballance2.Game.GamePlay.Other
 
         private void Update()
         {
-            if (active && step == 4 && game.GamePhysicsWorld.Simulate) {
+            if (active && step == 4 && !game.IsUserPaused && game.GamePhysicsWorld.Simulate && ui.GetCurrentPage() == null) {
                 movementHintTime += Time.deltaTime;
-                if (movementHintTime >= 12) HideTutorial();
+                if (movementHintTime >= 15 && card.gameObject.activeSelf) HideTutorial();
+
             }
         }
 
         private void Hint(int value, GameObject target = null)
         {
-            if (!active || busy || value <= step) return;
+            if (!active || busy || game.IsUserPaused || value <= step) return;
             Show(value, true);
             if (target != null) {
                 var position = target.transform.position + Vector3.up * 3;
                 Pfeil_Runter.transform.position = position;
                 Pfeil_Runter.gameObject.SetActive(true);
+                Pfeil_Runter_Trigger.transform.position = position;
+                Pfeil_Runter_Trigger.onTriggerEnter = (_, other) => Pfeil_Runter.gameObject.SetActive(false);
             }
         }
 
@@ -221,17 +242,19 @@ namespace Ballance2.Game.GamePlay.Other
 
         public void HideTutorial()
         {
-            ClearKeys();
+            ClearKeys(); HideArrows();
             if (card != null) card.gameObject.SetActive(false);
-            if (Pfeil_Runter != null) Pfeil_Runter.gameObject.SetActive(false);
             game.CanEscPause = true;
             modal = false;
         }
-
+        private void Fall(params object[] args) { if (step == 4) HideTutorial(); else HideArrows(); }
         private void ClearKeys()
         {
-            if (skipKey != 0 && ui != null) ui.DeleteKeyListen(skipKey);
-            skipKey = 0;
+            if (ui != null) {
+                if (continueKey != 0) ui.DeleteKeyListen(continueKey);
+                if (skipKey != 0) ui.DeleteKeyListen(skipKey);
+            }
+            continueKey = skipKey = 0;
         }
         private void HideArrows()
         {
@@ -241,20 +264,24 @@ namespace Ballance2.Game.GamePlay.Other
         }
         private void ClearTriggers()
         {
-            foreach (var trigger in new[] { Tut_ExtraLife, Tut_StoneTranfo, Tut_Rampe, Tut_ExtraPoint, Tut_Checkpoint, Tut_End, Tut_KeyEnd })
+            foreach (var trigger in new[] { Tut_ExtraLife, Tut_StoneTranfo, Tut_Rampe, Tut_ExtraPoint, Tut_Checkpoint, Tut_End, Tut_KeyEnd, Pfeil_Runter_Trigger })
                 if (trigger != null) trigger.onTriggerEnter = null;
         }
         private void Cleanup()
         {
-            active = false; ClearKeys(); ClearTriggers();
-            if (card != null) Destroy(card.gameObject);
+            generation++;
+            active = false; busy = false; ClearKeys(); ClearTriggers(); HideArrows();
+            if (card != null) { card.gameObject.SetActive(false); Destroy(card.gameObject); }
             card = null;
         }
         private void Quit(params object[] args) => Cleanup();
         private void Detach()
         {
             Cleanup();
-            if (subscribed && game != null) { game.EventBeforeStart.Off(BeforeStart); game.EventQuit.Off(Quit); }
+            if (subscribed && game != null) {
+                game.EventBeforeStart.Off(BeforeStart); game.EventQuit.Off(Quit);
+                game.EventRestart.Off(Quit); game.EventFall.Off(Fall);
+            }
             subscribed = false;
             if (entry != null) {
                 if (GameMediator.Instance != null) GameMediator.Instance.UnRegisterEventHandler("CoreTutorialLevelEventHandler", entry);

@@ -74,14 +74,25 @@ and run relevant checks individually instead of claiming the aggregate passed.
 state, mouse position/scaling, and touch state on virtual devices. It is not a
 real-device or full frame-timing test. It also invokes `MobileInputChecks.Run` for
 joystick pointer ownership, immediate press, cancellation and bounded tilt mapping.
+Run `Ballance2.Editor.MobileInputChecks.RunPrefabIntegration` separately **without**
+`-nographics`. It renders the shipped tutorial and joystick prefabs in a Canvas with
+a GraphicRaycaster and EventSystem, checks button/scroll priority, analog dispatch,
+release/cancellation/menu cleanup and the inert state of a replacement keypad.
+It also checks all five saved layouts in narrow portrait and short landscape at minimum/default/maximum size settings, including control-region intersections and 48-pixel targets. Its edit-mode fixture invokes component lifecycle methods explicitly; native ball
+force and the tutorial state machine still require the player checks below.
 The Node tilt bridge check covers permission denial, orientation mapping, stale data,
 visibility and late permission cancellation. These fixtures do not measure a real sensor.
 
 For mobile acceptance, open an isolated touch browser profile in portrait and landscape:
-start level 01 with touch, continue/skip the tutorial, move while operating camera buttons,
+start level 01 with touch and complete camera, overhead and movement guidance using
+Continue only, without skipping or keyboard input. Separately skip introductory and
+later hints. Open and close the menu on each step and during spawn; repeat fast taps,
+restart and exit to check stale callbacks. Move while operating camera buttons,
 swipe the free area, release outside the joystick, pause/resume, rotate and switch layouts.
 Opt into tilt in Controls, enable/recenter, then deny permission or remove sensor data and
-confirm touch fallback. Exercise native Android on a connected phone when available;
+confirm touch fallback. Repeat narrow portrait, landscape, rotation and browser-height
+changes in actual Chromium and WebKit engines; a Chromium User-Agent override is
+not WebKit/Safari coverage. Exercise native Android on a connected phone when available;
 record the device/browser and any unavailable real sensor/comfort/audio checks explicitly.
 
 `Ballance2.Editor.LocalizationChecks.Run` can also run separately to validate runtime
@@ -317,3 +328,18 @@ release identity; those checks do not establish full gameplay acceptance or perf
 ## Remaster visual authoring checks
 
 Use the exact Unity editor with graphics enabled for `Ballance2.Editor.RemasterUIVisualChecks.Run` (localized screens in their runtime-width containers), `Ballance2.Editor.RemasterReliefAuthoring.Generate` (reproducible linear relief imports and periodic-edge checks), and `Ballance2.Editor.RemasterArtChecks.Render` (moving-light materials, all cloud qualities, stock palettes, headings and a non-repetition camera translation). `RenderClouds` regenerates only the density volume before rendering the sky fixtures. Check cached sky orientation, resize, source-material restoration and level unload in native and Web players. Preview output lives under `Builds/checks/`; it is generated evidence, not maintained source. Inspect the images and actual players; a successful renderer or shader compile does not establish visual quality, menu input behavior or a frame budget.
+
+The mobile prefab check also sizes the Remaster main/level grids at four viewport
+sizes and verifies Russian footer labels. Its offscreen raycast fixtures use
+320-pixel portrait and 568-pixel landscape widths within the editor display;
+larger layouts need browser hit testing because Unity clips offscreen rectangle
+hit tests to that display. Inspect scroll-to-Back and Replay tutorial on short screens.
+
+Run `Ballance2.Editor.MobileTutorialChecks.Run` with the exact Unity editor,
+`-buildTarget StandaloneOSX`, graphics enabled and without `-batchmode` or `-quit`.
+The isolated profile and Remaster preference prefix keep player data unchanged.
+The real first-level fixture invokes bound Continue/Skip buttons and authored
+later-hint callbacks, checks pause snapshots, repeated input, spawn cancellation,
+restart, fall and exit, and writes `Builds/checks/tutorial-*/report.txt`.
+These directed lifecycle checks complement browser touch and prefab raycast tests;
+they do not establish a full touch playthrough.

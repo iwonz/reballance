@@ -11,6 +11,9 @@ namespace Ballance2.Game.Remaster
     private Text lives;
     private int previousLives = int.MinValue;
     private CanvasGroup visibility;
+    private RectTransform lifePanel;
+    private float mobileUnit;
+    private Vector2 mobileScreen;
 
     private static void Contrast(Text text)
     {
@@ -59,6 +62,7 @@ namespace Ballance2.Game.Remaster
       var lifePanel = new GameObject("Life summary", typeof(RectTransform)).GetComponent<RectTransform>();
       lifePanel.SetParent(control.transform, false);
       RemasterTheme.Place(lifePanel, .81f, .89f, .972f, .975f);
+      hud.lifePanel = lifePanel;
       hud.lives = RemasterTheme.Label(lifePanel, "Lives", 32, TextAnchor.MiddleRight);
       Counter(lifePanel, hud.lives, I18N.Tr("core.ui.Remaster.HudLives"), RemasterIcon.Life, true);
 
@@ -68,6 +72,14 @@ namespace Ballance2.Game.Remaster
     {
       var game = GamePlayManager.Instance;
       if (game == null || lives == null) return;
+      if (Ballance2.Menu.Touch.MobileControls.Available) {
+        float unit = Ballance2.Menu.Touch.MobileUILayout.Unit(transform);
+        var screen = new Vector2(Screen.width, Screen.height);
+        if (mobileScreen != screen || !Mathf.Approximately(mobileUnit, unit)) {
+          mobileScreen = screen; mobileUnit = unit;
+          lifePanel.offsetMin = lifePanel.offsetMax = new Vector2(-64 * unit, 0);
+        }
+      }
       visibility.alpha = game._IsGamePlaying ? 1 : 0;
       visibility.blocksRaycasts = game._IsGamePlaying;
       if (game.CurrentLife != previousLives) {
