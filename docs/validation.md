@@ -18,6 +18,7 @@ python3 scripts/test-release-tools.py
 python3 scripts/test-install-macos.py
 python3 scripts/test-web-performance.py
 node --check scripts/measure-web-performance.js
+node scripts/test-mobile-tilt.js
 node scripts/test-web-lifecycle.js
 bash -n scripts/build.sh scripts/build-macos.sh scripts/setup-openspec.sh
 ```
@@ -71,7 +72,17 @@ and run relevant checks individually instead of claiming the aggregate passed.
 
 `Ballance2.Editor.InputChecks.Run` exercises supported key mapping, held keyboard
 state, mouse position/scaling, and touch state on virtual devices. It is not a
-real-device or full frame-timing test.
+real-device or full frame-timing test. It also invokes `MobileInputChecks.Run` for
+joystick pointer ownership, immediate press, cancellation and bounded tilt mapping.
+The Node tilt bridge check covers permission denial, orientation mapping, stale data,
+visibility and late permission cancellation. These fixtures do not measure a real sensor.
+
+For mobile acceptance, open an isolated touch browser profile in portrait and landscape:
+start level 01 with touch, continue/skip the tutorial, move while operating camera buttons,
+swipe the free area, release outside the joystick, pause/resume, rotate and switch layouts.
+Opt into tilt in Controls, enable/recenter, then deny permission or remove sensor data and
+confirm touch fallback. Exercise native Android on a connected phone when available;
+record the device/browser and any unavailable real sensor/comfort/audio checks explicitly.
 
 `Ballance2.Editor.LocalizationChecks.Run` can also run separately to validate runtime
 XML, fallbacks, Cyrillic coverage, and prefab bindings. For visual previews, use
@@ -178,8 +189,11 @@ npx --yes @playwright/cli@0.1.22 --session fps close
 ```
 
 The reference profile is a 1280x900 browser viewport, DPR 2, a **1920x1200** Unity
-canvas, fresh default High quality, and a visible hardware-accelerated tab on a
+canvas, explicitly selected High quality, and a visible hardware-accelerated tab on a
 display capable of at least 60 Hz, with the WebGL GPU timer extension available.
+The capture script uses fresh defaults: Medium on desktop and Low on mobile.
+Its responsive-canvas default captures provide comparisons, not reference qualification;
+High quality and the reference canvas must be established for that separate gate.
 Keep the browser foregrounded and avoid concurrent
 builds or other GPU workloads. Do not force SwiftShader. Repeat captures at least
 twice on the same hardware/browser for before/after comparisons. A run that fails

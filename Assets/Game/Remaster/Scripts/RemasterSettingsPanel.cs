@@ -101,12 +101,12 @@ namespace Ballance2.Game.Remaster
       foreach (EnvironmentPreset preset in Enum.GetValues(typeof(EnvironmentPreset))) presetNames.Add(PresetName(preset));
       Choice(Tr("Environment"), presetNames.ToArray(), () => (int)RemasterPreferences.Preset,
         value => EnvironmentController.Select((EnvironmentPreset)value));
-      Preference("Quality", "graphics.quality", 1, I18N.Tr("core.ui.SettingsQualityLow"), I18N.Tr("core.ui.SettingsQualityMedium"), I18N.Tr("core.ui.SettingsQualityHigh"));
+      Preference("Quality", "graphics.quality", RemasterGraphics.DefaultQuality, I18N.Tr("core.ui.SettingsQualityLow"), I18N.Tr("core.ui.SettingsQualityMedium"), I18N.Tr("core.ui.SettingsQualityHigh"));
       Preference("Resolution", "graphics.resolution", 0, "Auto", "1920 × 1080", "2560 × 1440 · QHD", "3840 × 2160 · 4K");
       Preference("RenderScale", "graphics.scale", 3, "50%", "67%", "75%", "100%");
       Preference("UIScale", "graphics.uiScale", 1, "85%", "100%", "115%", "130%");
-      Preference("Shadows", "graphics.shadows", 1, Tr("Off"), Tr("Medium"), Tr("High"));
-      Preference("AA", "graphics.aa", 1, Tr("Off"), "2×", "4×");
+      Preference("Shadows", "graphics.shadows", RemasterGraphics.DefaultQuality, Tr("Off"), Tr("Medium"), Tr("High"));
+      Preference("AA", "graphics.aa", RemasterGraphics.DefaultQuality, Tr("Off"), "2×", "4×");
       Preference("Effects", "graphics.effects", 1, Tr("Off"), Tr("Medium"), Tr("High"));
       var settings = GameSettingsManager.GetSettings(GamePackageManager.SYSTEM_PACKAGE_NAME);
       Choice(Tr("Clouds"), new[] { Tr("Off"), Tr("On") }, () => settings.GetBool(SettingConstants.SettingsVideoCloud) ? 1 : 0,

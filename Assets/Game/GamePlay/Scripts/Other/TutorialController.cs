@@ -114,7 +114,7 @@ namespace Ballance2.Game.GamePlay.Other
             if (pause && spawned) game.PauseLevel(false);
             game.CanEscPause = !pause;
             if (pause) game._IsCountDownPoint = false;
-            text.text = HintText(value, Application.isMobilePlatform);
+            text.text = HintText(value, Ballance2.Menu.Touch.MobileControls.Available);
             card.gameObject.SetActive(true);
             next.gameObject.SetActive(value != 4);
             skip.gameObject.SetActive(true);

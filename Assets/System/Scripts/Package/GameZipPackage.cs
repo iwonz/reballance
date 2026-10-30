@@ -25,24 +25,48 @@ namespace Ballance2.Package
 {
   public class GameZipPackage : GamePackage
   {
-    private async Task<ZipFile> OpenArchive()
+    private static string pendingPath;
+    private static byte[] pendingBytes;
+
+    internal static void RetainRemoteArchive(string path, byte[] bytes)
+    {
+      // One pending startup download bounds retention even when optional packages stay disabled.
+      pendingPath = bytes != null && bytes.Length <= 64 * 1024 * 1024 ? path : null;
+      pendingBytes = pendingPath == null ? null : bytes;
+    }
+    internal static byte[] TakeRemoteArchive(string path)
+    {
+      var bytes = pendingPath == path ? pendingBytes : null;
+      pendingPath = null; pendingBytes = null;
+      return bytes;
+    }
+
+    private async Task<ZipFile> OpenArchive(bool metadata = false)
     {
       if (!PathUtils.IsRemotePath(PackageFilePath))
         return ZipUtils.OpenZipFile(PackageFilePath);
 
+      var bytes = TakeRemoteArchive(PackageFilePath);
+      if (bytes != null) {
+        if (metadata) RetainRemoteArchive(PackageFilePath, bytes);
+        return ZipUtils.OpenZipStream(new MemoryStream(bytes, false));
+      }
       using var request = UnityWebRequest.Get(PackageFilePath);
       await request.SendWebRequest();
       if (request.result != UnityWebRequest.Result.Success)
         throw new IOException("Request " + PackageFilePath + " failed: " + request.error);
-      return ZipUtils.OpenZipStream(new MemoryStream(request.downloadHandler.data, false));
+      bytes = request.downloadHandler.data;
+      if (metadata) RetainRemoteArchive(PackageFilePath, bytes);
+      return ZipUtils.OpenZipStream(new MemoryStream(bytes, false));
     }
 
     public override async Task<bool> LoadInfo(string filePath)
     {
       PackageFilePath = PathUtils.FixFilePathScheme(filePath);
+      bool loaded = false;
       try
       {
-        using var zip = await OpenArchive();
+        using var zip = await OpenArchive(true);
         var definition = ZipUtils.FindEntry(zip, "PackageDef.xml");
         if (definition == null)
         {
@@ -76,6 +100,7 @@ namespace Ballance2.Package
             throw;
           }
         }
+        loaded = true;
         UpdateTime = PathUtils.IsRemotePath(PackageFilePath) ? DateTime.MinValue : File.GetLastWriteTime(PackageFilePath);
         return true;
       }
@@ -85,6 +110,7 @@ namespace Ballance2.Package
         GameErrorChecker.SetLastErrorAndLog(GameError.PackageIncompatible, TAG, LoadError);
         return false;
       }
+      finally { if (!loaded) TakeRemoteArchive(PackageFilePath); }
     }
 
     public override async Task<bool> LoadPackage()

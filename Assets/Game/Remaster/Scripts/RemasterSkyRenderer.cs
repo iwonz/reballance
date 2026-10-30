@@ -18,7 +18,7 @@ namespace Ballance2.Game.Remaster
     private bool initialized;
     private const float BlendDuration = .18f;
 
-    public static int CubeSize(int quality) => quality <= 1 ? 128 : 256;
+    public static int CubeSize(int quality) => quality <= 2 ? 64 : 256;
 
     private RenderTexture MakeCube(int size)
     {

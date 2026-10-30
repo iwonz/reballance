@@ -36,6 +36,18 @@ namespace Ballance2.Editor
       {
         CheckFiles(directory);
         CheckArchives(directory);
+        var flags = System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static;
+        void Retain(string path, byte[] bytes) => typeof(GameZipPackage).GetMethod("RetainRemoteArchive", flags).Invoke(null, new object[] { path, bytes });
+        byte[] Take(string path) => (byte[])typeof(GameZipPackage).GetMethod("TakeRemoteArchive", flags).Invoke(null, new object[] { path });
+        var pending = new byte[] { 1, 2, 3 };
+        Retain("https://example.invalid/a", pending);
+        Require(ReferenceEquals(pending, Take("https://example.invalid/a")), "remote download reused");
+        Require(Take("https://example.invalid/a") == null, "remote download consumed once");
+        Retain("https://example.invalid/a", pending);
+        Require(Take("https://example.invalid/b") == null, "remote URLs cannot share content");
+        Require(Take("https://example.invalid/a") == null, "unmatched pending download released");
+        Retain("https://example.invalid/a", new byte[64 * 1024 * 1024 + 1]);
+        Require(Take("https://example.invalid/a") == null, "pending archive retention bound");
         CheckPools();
         CheckScrollPool();
         Debug.Log("MODERNIZATION_CHECKS_PASSED: archive compatibility, CRC/size bounds, streaming, files, pool ownership and disposal.");

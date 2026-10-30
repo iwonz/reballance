@@ -115,12 +115,14 @@ namespace Ballance2.Editor
       Require(Ballance2.Res.GamePathManager.ResolvePersistentDataPath("/profiles/Ballance", RuntimePlatform.OSXPlayer) == "/profiles/Ballance", "classic storage never imported");
       CheckRecords();
       CheckPreferences();
+      var title = UnityEditor.AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/Game/Remaster/Resources/Remaster/TitleArtwork.png");
+      Require(Mathf.Abs((float)title.width / title.height - 1672f / 941) < .002f, "title source aspect preserved");
       Require(RemasterGraphics.Calculate(3840, 2160, 0, 3) == new Vector2Int(1920, 1080), "Auto caps at Full HD");
       Require(RemasterGraphics.Calculate(1920, 1080, 2, 3) == new Vector2Int(2560, 1440), "QHD can render above display resolution");
       Require(RemasterGraphics.Calculate(1920, 1080, 3, 0) == new Vector2Int(1920, 1080), "4K at half scale");
       Require(RemasterGraphics.Calculate(3440, 1440, 3, 3) == new Vector2Int(3840, 1607), "ultrawide aspect preserved");
       Require(RemasterGraphics.Calculate(720, 1280, 0, 3) == new Vector2Int(608, 1080), "portrait aspect preserved");
-      Require(RemasterSkyRenderer.CubeSize(1) == 128 && RemasterSkyRenderer.CubeSize(2) == 256 && RemasterSkyRenderer.CubeSize(3) == 256, "bounded reusable cloud cubemaps");
+      Require(RemasterSkyRenderer.CubeSize(1) == 64 && RemasterSkyRenderer.CubeSize(2) == 64 && RemasterSkyRenderer.CubeSize(3) == 256, "bounded reusable cloud cubemaps");
       Debug.Log("ENVIRONMENT_CHECKS_PASSED: profiles, blends, pause, checkpoint, shared records and invalid input.");
     }
 

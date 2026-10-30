@@ -112,7 +112,7 @@ namespace Ballance2.Game.Remaster
       sky.SetVector("_ThemeSky", state.skyTheme);
       sky.SetFloat("_WeatherTime", owner.Run.Time);
       bool clouds = GameSettingsManager.GetSettings(GamePackageManager.SYSTEM_PACKAGE_NAME).GetBool(SettingConstants.SettingsVideoCloud);
-      sky.SetFloat("_CloudQuality", !clouds ? 0 : Mathf.Clamp(RemasterPreferences.GetInt("graphics.quality", 1),0,2)+1);
+      sky.SetFloat("_CloudQuality", !clouds ? 0 : Mathf.Clamp(RemasterPreferences.GetInt("graphics.quality", RemasterGraphics.DefaultQuality),0,2)+1);
       sky.SetVector("_CloudSun", -GameManager.GameLight.transform.forward);
       var warm = new Color(1, 0.89f, 0.72f);
       var cold = new Color(0.72f, 0.85f, 1);

@@ -7,15 +7,15 @@
   <title>{{{ PRODUCT_NAME }}}</title>
   <style>
     * { box-sizing: border-box; }
-    html, body { margin: 0; height: 100%; background: #102128; color: #eef4ef; font: 14px system-ui, sans-serif; }
+    html, body { margin: 0; height: 100%; overflow: hidden; overscroll-behavior: none; background: #102128; color: #eef4ef; font: 14px system-ui, sans-serif; }
     #player { display: grid; grid-template-rows: auto minmax(0, 1fr); width: 100%; height: 100dvh; }
     header { display: flex; align-items: center; gap: 16px; padding: max(9px, env(safe-area-inset-top)) max(18px, env(safe-area-inset-right)) 9px max(18px, env(safe-area-inset-left)); }
     header strong { font-weight: 500; letter-spacing: .12em; margin-right: auto; }
     a, button { color: inherit; font: inherit; border: 1px solid #62746e; border-radius: 6px; padding: 6px 12px; background: transparent; text-decoration: none; cursor: pointer; }
     a:focus-visible, button:focus-visible { outline: 3px solid #b7ddbc; outline-offset: 3px; }
     button:disabled { opacity: .4; cursor: default; }
-    .stage { position: relative; min-height: 0; }
-    canvas { display: block; width: 100%; height: 100%; background: #102128; outline: none; }
+    .stage { position: relative; min-height: 0; padding: 0 env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left); }
+    canvas { display: block; width: 100%; height: 100%; background: #102128; outline: none; touch-action: none; }
     #loading { position: absolute; inset: 0; display: grid; place-content: center; text-align: center; gap: 18px; background: #102128; padding: 30px; }
     #loading strong { font-size: clamp(28px, 6vw, 60px); letter-spacing: .16em; font-weight: 300; }
     progress { width: min(65vw, 320px); height: 5px; accent-color: #b7ddbc; margin: auto; }
@@ -36,7 +36,7 @@
   <script>
     // Let the browser move focus between host controls instead of Unity consuming Tab.
     window.addEventListener("keydown", event => {
-      if (event.key === "Tab") event.stopImmediatePropagation();
+      if (event.key === "Tab" && !event.target.closest?.('[role="dialog"]')) event.stopImmediatePropagation();
     }, true);
     const language = navigator.language.toLowerCase();
     const locale = language.startsWith("ru") ? "ru" : language.startsWith("zh") ? (/hant|tw|hk/.test(language) ? "zh-Hant" : "zh-Hans") : "en";
@@ -68,6 +68,7 @@
       fullscreenElementID: "player",
       matchWebGLToCanvasSize: true,
       autoSyncPersistentDataPath: true,
+      devicePixelRatio: matchMedia("(pointer: coarse)").matches ? 1 : Math.min(devicePixelRatio, 2),
       showBanner: (message, type) => type === "error" ? failure(message) : console.warn(message)
     };
     const script = document.createElement("script");
@@ -89,7 +90,13 @@
       });
       const fullscreen = document.querySelector("#fullscreen");
       fullscreen.disabled = false;
-      fullscreen.onclick = () => instance.SetFullscreen(1);
+      fullscreen.onclick = async () => {
+        try {
+          await document.querySelector("#player").requestFullscreen();
+          if (matchMedia("(pointer: coarse)").matches && screen.orientation?.lock)
+            await screen.orientation.lock("landscape").catch(() => {});
+        } catch (error) { console.warn(error); }
+      };
       document.querySelector("canvas").focus();
     }).catch(failure);
     document.body.appendChild(script);

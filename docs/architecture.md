@@ -70,7 +70,10 @@ package `com.unity.sharp-zip-lib` 1.4.2. Reads locate entries through the centra
 directory, accept legacy leading-slash metadata names, check size and CRC, and cap
 each expanded entry at 512 MiB. Async reads yield between 1 MiB chunks through
 `Awaitable.NextFrameAsync`, without Web worker threads. Local archives use a file
-stream; HTTP/jar archives still download into memory before indexed reads. This is
+stream; HTTP/jar archives still download into memory before indexed reads. One pending remote
+archive up to 64 MiB is reused between immediate metadata and content reads, then
+released; a different remote archive evicts it. Larger archives retain the existing
+download path without retention. This is
 not network streaming or an aggregate memory budget. Writers copy file streams
 directly and let the library calculate CRC. Requests and archive streams are disposed.
 
@@ -198,6 +201,17 @@ delta scaling, primary touch, and EnhancedTouch. The Android build temporarily
 selects Input System only and restores editor configuration afterward.
 Touch controllers live in `Assets/Game/Menu/Scripts/Touch`; keypad layout and settings
 live under `Menu/Scripts/Game` and `Menu/Scripts/Control`.
+[MobileControls](../Assets/Game/Menu/Scripts/Touch/MobileControls.cs) enables runtime
+touch layouts for Android and mobile Web, owns camera swipes/pause, safe-area fitting
+and interruption cleanup. The existing joystick and directional controllers own
+individual EventSystem pointers. Web capability comes from `navigator.maxTouchPoints`,
+not the virtual Touchscreen Unity allocates on desktop browsers. New profiles use the left analog joystick; saved
+layouts remain valid. [MobileTilt](../Assets/Game/Menu/Scripts/Touch/MobileTilt.cs)
+calibrates normalized gravity, filters jitter and gives a held joystick priority.
+The [browser sensor bridge](../Assets/Plugins/WebGL/MobileTilt.jslib) requests permission
+only after opting in, rejects stale/background samples and removes listeners on cleanup.
+The mobile settings list includes tilt with joystick fallback; its recenter action
+also enables sensors when the browser needs a fresh gesture.
 [InputChecks](../Assets/System/Scripts/Editor/InputChecks.cs) uses virtual devices;
 physical touch layout, timing, and ergonomics still need an Android device.
 
@@ -347,6 +361,10 @@ and CI requirements. Native rebuild provenance lives in
 
 ## Web publication
 
+The [Web host](../Assets/WebGLTemplates/Remaster/index.html) fits the visible viewport,
+respects safe-area insets, suppresses canvas touch scrolling and caps coarse-pointer
+rendering at DPR 1. Fullscreen uses a browser gesture and requests landscape when supported.
+
 [Contract](../openspec/specs/web-publication/spec.md).
 [Pages workflow](../.github/workflows/github-pages.yml) deploys this repository's
 requested release only; hosting files come from the workflow's immutable commit.
@@ -365,6 +383,9 @@ return in the public player. [Credits](../CREDITS.md) owns attribution and right
 Classic Ballance publication is independent in its own repository.
 
 ## Known gaps
+
+- The shipped `GlobalGamePermissionTipDialog` prefab reports a missing-script warning
+  at startup. Menu and gameplay smoke still work; prefab cleanup remains separate.
 
 - The Reballance global loading screen still uses the legacy BALLANCE / REMASTER
   title in [GameGlobalIngameLoading](../Assets/System/Scripts/UI/CoreUI/GameGlobalIngameLoading.cs).

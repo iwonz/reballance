@@ -1,12 +1,15 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 namespace Ballance2.Game.Remaster
 {
-  public sealed class RemasterIntro : MonoBehaviour
+  public sealed class RemasterIntro : MonoBehaviour, IPointerClickHandler
   {
     private RawImage left, right;
     private float elapsed;
+    public bool Ready;
+    public System.Action Continue;
 
     public static RawImage Artwork(Transform parent)
     {
@@ -50,6 +53,11 @@ namespace Ballance2.Game.Remaster
       left.color = right.color = new Color(1, 1, 1, 1 - t);
     }
 
-    private void Update() { elapsed += Time.unscaledDeltaTime; Animate(elapsed); }
+    public void OnPointerClick(PointerEventData data) { if (Ready) Continue?.Invoke(); }
+    private void Update()
+    {
+      elapsed += Time.unscaledDeltaTime; Animate(elapsed);
+      if (Ready && elapsed >= 4) Continue?.Invoke();
+    }
   }
 }

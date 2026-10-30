@@ -1,5 +1,12 @@
 <I18n>
   <Language name="ChineseSimplified">
+    <Text name="core.ui.MobileTilt">倾斜与触控</Text>
+    <Text name="core.ui.MobilePause">暂停</Text>
+    <Text name="core.ui.MobileRecenter">校准</Text>
+    <Text name="core.ui.MobileTouchHint">摇杆或箭头移动。镜头按钮或滑动转向。按住眼睛俯视。</Text>
+    <Text name="core.ui.MobileTiltHint">舒适地握住手机后校准。按住摇杆时优先使用触控。</Text>
+    <Text name="core.ui.MobileTiltUnavailable">传感器不可用。请使用摇杆或点击校准启用传感器。</Text>
+    <Text name="core.ui.MobileSensorAllow">允许倾斜控制</Text>
     <Text name="core.ui.Back">返回</Text>
     <Text name="core.ui.Ok">确定</Text>
     <Text name="core.ui.Yes">是</Text>
@@ -264,6 +271,13 @@ Ballance 平衡球 是一款滚球游戏。
     <Text name="core.ui.Remaster.ReturnToMenu">返回主菜单？当前关卡进度将丢失。</Text>
   </Language>
   <Language name="English">
+    <Text name="core.ui.MobileTilt">Tilt + touch fallback</Text>
+    <Text name="core.ui.MobilePause">Pause</Text>
+    <Text name="core.ui.MobileRecenter">Recenter</Text>
+    <Text name="core.ui.MobileTouchHint">Joystick or arrows: move. Camera buttons or swipe: turn. Hold eye: look down.</Text>
+    <Text name="core.ui.MobileTiltHint">Hold comfortably, then Recenter. Joystick overrides tilt while held.</Text>
+    <Text name="core.ui.MobileTiltUnavailable">Tilt unavailable. Use the joystick or tap Recenter to enable sensors.</Text>
+    <Text name="core.ui.MobileSensorAllow">Allow tilt control</Text>
     <Text name="core.ui.RebuildBy">Unity remake by</Text>
     <Text name="core.level.1">Level 1</Text>
     <Text name="core.level.2">Level 2</Text>
@@ -586,6 +600,13 @@ Look ahead, choose the right ball and take your time on narrow paths. You can re
     <Text name="core.ui.Remaster.ReturnToMenu">Return to the main menu? Current level progress will be lost.</Text>
   </Language>
   <Language name="ChineseTraditional">
+    <Text name="core.ui.MobileTilt">傾斜與觸控</Text>
+    <Text name="core.ui.MobilePause">暫停</Text>
+    <Text name="core.ui.MobileRecenter">校準</Text>
+    <Text name="core.ui.MobileTouchHint">搖桿或箭頭移動。鏡頭按鈕或滑動轉向。按住眼睛俯視。</Text>
+    <Text name="core.ui.MobileTiltHint">舒適地握住手機後校準。按住搖桿時優先使用觸控。</Text>
+    <Text name="core.ui.MobileTiltUnavailable">感測器無法使用。請使用搖桿或點擊校準啟用感測器。</Text>
+    <Text name="core.ui.MobileSensorAllow">允許傾斜控制</Text>
     <Text name="core.ui.Back">返回</Text>
     <Text name="core.ui.Ok">確定</Text>
     <Text name="core.ui.Yes">是</Text>
@@ -847,6 +868,13 @@ https://github.com/iwonz/reballance/issues/ 向我們迴響錯誤
     <Text name="core.ui.Remaster.ReturnToMenu">返回主選單？目前關卡進度將遺失。</Text>
   </Language>
   <Language name="Russian">
+    <Text name="core.ui.MobileTilt">Наклон + джойстик</Text>
+    <Text name="core.ui.MobilePause">Пауза</Text>
+    <Text name="core.ui.MobileRecenter">Калибровка</Text>
+    <Text name="core.ui.MobileTouchHint">Джойстик или стрелки — движение. Кнопки или свайп — камера. Глаз — вид сверху.</Text>
+    <Text name="core.ui.MobileTiltHint">Держите телефон удобно и нажмите «Калибровка». Джойстик временно заменяет наклон.</Text>
+    <Text name="core.ui.MobileTiltUnavailable">Датчик недоступен. Используйте джойстик или нажмите «Калибровка».</Text>
+    <Text name="core.ui.MobileSensorAllow">Разрешить управление наклоном</Text>
     <Text name="core.ui.RebuildBy">Автор версии на Unity</Text>
     <Text name="core.level.1">Уровень 1</Text>
     <Text name="core.level.2">Уровень 2</Text>

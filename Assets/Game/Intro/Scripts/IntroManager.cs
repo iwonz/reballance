@@ -14,6 +14,7 @@ namespace Ballance2.Game {
     const string TAG = "IntroManager";
 
     private static RectTransform IntroUI = null;
+    private static bool startupReady;
 
     // Enter the Intro logical scene.
     private static void OnEnterIntro(GamePackage thisGamePackage) {
@@ -34,14 +35,13 @@ namespace Ballance2.Game {
       // Start intro music.
       GameSoundManager.PlayFastVoice("core.sounds.music:Music_Theme_4_1.wav", GameSoundType.Background);
 
-      GameTimer.Delay(5, () => {
-        // Fade in from black.
-        GameUIManager.MaskBlackFadeIn(1);
-        GameTimer.Delay(1, () => {
-          // Enter the menu.
-          GameManager.Instance.RequestEnterLogicScense("MenuLevel");
-        });
-      });
+      var intro = IntroUI.GetComponent<Ballance2.Game.Remaster.RemasterIntro>();
+      intro.Ready = startupReady;
+      intro.Continue = () => {
+        intro.Continue = null;
+        GameUIManager.MaskBlackFadeIn(.3f);
+        GameManager.Instance.RequestEnterLogicScense("MenuLevel");
+      };
     }
     private static void OnQuitIntro() {
       Log.D(TAG, "Quit intro ui");
@@ -51,6 +51,12 @@ namespace Ballance2.Game {
     }
 
     public static void Init(GamePackage package) {
+      startupReady = false;
+      GameManager.GameMediator.RegisterEventHandler(package, GameEventNames.EVENT_GAME_MANAGER_INIT_FINISHED, "IntroReady", (evtName, param) => {
+        startupReady = true;
+        if (IntroUI != null) IntroUI.GetComponent<Ballance2.Game.Remaster.RemasterIntro>().Ready = true;
+        return false;
+      });
       // Register logical scene transitions.
       GameManager.GameMediator.RegisterEventHandler(package, GameEventNames.EVENT_LOGIC_SECNSE_ENTER, "Intro", (evtName, param) => {
         var scense = param[0];

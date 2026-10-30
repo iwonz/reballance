@@ -9,6 +9,7 @@ namespace Ballance2.Game.Remaster
 {
   public sealed class RemasterGraphics : MonoBehaviour
   {
+    public static int DefaultQuality => Ballance2.Menu.Touch.MobileControls.Available ? 0 : 1;
     public static Vector2Int ActualResolution { get; private set; }
     private RenderTexture scene;
     private RawImage output;
@@ -38,12 +39,12 @@ namespace Ballance2.Game.Remaster
 
     public static void ApplyQuality()
     {
-      int quality = Mathf.Clamp(RemasterPreferences.GetInt("graphics.quality", 1), 0, 2);
+      int quality = Mathf.Clamp(RemasterPreferences.GetInt("graphics.quality", DefaultQuality), 0, 2);
       QualitySettings.SetQualityLevel(new[] { 1, 2, 3 }[quality], true);
-      int shadows = Mathf.Clamp(RemasterPreferences.GetInt("graphics.shadows", 1), 0, 2);
+      int shadows = Mathf.Clamp(RemasterPreferences.GetInt("graphics.shadows", DefaultQuality), 0, 2);
       QualitySettings.shadows = shadows == 0 ? ShadowQuality.Disable : shadows == 1 ? ShadowQuality.HardOnly : ShadowQuality.All;
       QualitySettings.shadowDistance = new[] { 0f, 100f, 180f }[shadows];
-      QualitySettings.antiAliasing = new[] { 0, 2, 4 }[Mathf.Clamp(RemasterPreferences.GetInt("graphics.aa", 1), 0, 2)];
+      QualitySettings.antiAliasing = new[] { 0, 2, 4 }[Mathf.Clamp(RemasterPreferences.GetInt("graphics.aa", DefaultQuality), 0, 2)];
       QualitySettings.realtimeReflectionProbes = true;
       if (GameManager.Instance != null && GameManager.Instance.GameSettings != null)
         QualitySettings.vSyncCount = GameManager.Instance.GameSettings.GetInt(SettingConstants.SettingsVideoVsync, 0);
@@ -123,7 +124,7 @@ namespace Ballance2.Game.Remaster
       PrepareTarget();
       foreach (var camera in Camera.allCameras) ConfigureCamera(camera);
       if (visibleSky != null && (reflectionRender < 0 || reflection.IsFinishedRendering(reflectionRender))) {
-        int quality = Mathf.Clamp(RemasterPreferences.GetInt("graphics.quality", 1), 0, 2);
+        int quality = Mathf.Clamp(RemasterPreferences.GetInt("graphics.quality", DefaultQuality), 0, 2);
         int size = 64 << quality;
         var weather = visibleSky.HasProperty("_Weather") ? visibleSky.GetVector("_Weather") : Vector4.zero;
         var theme = visibleSky.HasProperty("_ThemeSky") ? visibleSky.GetVector("_ThemeSky") : Vector4.zero;
